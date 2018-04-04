@@ -27,7 +27,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book create(Book book) {
-        Book book1 = new Book(book.getTitle(), book.getAuthor(), book.getPrice(), book.getCategory(), book.getImage());
+        Book book1 = new Book(book.getTitle(), book.getAuthor(), book.getPrice(), book.getCategory(), book.getImage(), book.getAvailable());
         return bookRepository.save(book1);
     }
 
@@ -41,6 +41,7 @@ public class BookServiceImpl implements BookService {
             b.setPrice(book.getPrice());
             b.setCategory(book.getCategory());
             b.setImage(book.getImage());
+            b.setAvailable(book.getAvailable());
 
             return bookRepository.save(b);
         } else

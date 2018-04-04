@@ -26,6 +26,8 @@ public class Book implements Serializable {
 
     private String image;
 
+    private long available;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", nullable = false)
     private Date create_date;
@@ -50,12 +52,13 @@ public class Book implements Serializable {
         super();
     }
 
-    public Book(String title, String author, double price, String category, String image) {
+    public Book(String title, String author, double price, String category, String image, long available) {
         this.title = title;
         this.author = author;
         this.price = price;
         this.category = category;
         this.image = image;
+        this.available = available;
     }
 
     public long getId() {
@@ -120,5 +123,13 @@ public class Book implements Serializable {
 
     public void setMod_date(Date mod_date) {
         this.mod_date = mod_date;
+    }
+
+    public long getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(long available) {
+        this.available = available;
     }
 }
