@@ -24,5 +24,7 @@ export const bookConstants = {
         'Children\'s', 'Comics', 'Cookbooks', 'Diaries', 'Dictionaries', 'Drama', 'Encyclopedias', 'Fantasy',
         'Guide', 'Health', 'History', 'Horror', 'Journals', 'Math', 'Mystery', 'Poetry', 'Prayer books',
         'Religion, Spirituality & New Age', 'Romance', 'Satire', 'Science', 'Science fiction', 'Self-help',
-        'Series', 'Travel', 'Trilogy']
+        'Series', 'Travel', 'Trilogy'],
+
+    BOOK_SORT: 'BOOK_SORT'
 };

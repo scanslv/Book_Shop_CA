@@ -6,7 +6,8 @@ export const allUsersActions = {
     getAll,
     getUser,
     update,
-    _delete
+    _delete,
+    sort
 };
 
 function getAll() {
@@ -121,5 +122,15 @@ function _delete(id) {
 
     function failure(error) {
         return {type: allUsersConstants.DELETE_USER_FAILURE, error}
+    }
+}
+
+function sort(key, order) {
+    return dispatch => {
+        dispatch(success({key: key, order: order}));
+    };
+
+    function success(sort) {
+        return {type: allUsersConstants.USER_SORT, sort}
     }
 }

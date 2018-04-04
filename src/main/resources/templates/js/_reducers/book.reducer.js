@@ -1,17 +1,27 @@
 import {bookConstants} from '../_constants';
 
+const SORT_ASC = 'asc';
+const SORT_DESC = 'desc';
+
+const defaultSortKey = 'title';
+const defaultSortOrder = SORT_ASC;
+
 const initialState = {
-    gettingBooks: true
+    gettingBooks: true,
+    sortKey: defaultSortKey,
+    sortOrder: defaultSortOrder
 };
 
 export function book(state = initialState, action) {
     switch (action.type) {
         case bookConstants.GET_ALL_BOOKS_REQUEST:
             return {
+                ...state,
                 gettingBooks: true
             };
         case bookConstants.GET_ALL_BOOKS_SUCCESS:
             return {
+                ...state,
                 gettingBooks: false,
                 books: action.books
             };
@@ -61,6 +71,12 @@ export function book(state = initialState, action) {
             };
         case bookConstants.DELETE_BOOK_FAILURE:
             return {};
+        case bookConstants.BOOK_SORT:
+            return {
+                ...state,
+                sortKey: action.sort.key,
+                sortOrder: action.sort.order
+            };
         default:
             return state
     }

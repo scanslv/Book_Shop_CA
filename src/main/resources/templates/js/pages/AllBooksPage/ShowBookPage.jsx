@@ -221,7 +221,7 @@ class ShowBookPage extends React.Component {
                             </div>
 
                             <hr/>
-                            <button onClick={() => this.addToBasket(book)} disabled={book.available < 1}
+                            <button onClick={() => this.addToBasket(book)} disabled={book.available < 1 || editing}
                                     className="btn btn-primary btn-block">Add to basket
                             </button>
                             {loggedUser && loggedUser.role === 'ROLE_ADMIN' && (

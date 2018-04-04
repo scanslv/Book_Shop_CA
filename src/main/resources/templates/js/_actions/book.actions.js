@@ -1,13 +1,16 @@
-import { bookConstants } from '../_constants';
-import { bookService } from '../_services';
-import { alertActions } from './';
+import {bookConstants} from '../_constants';
+import {bookService} from '../_services';
+import {alertActions} from './';
 import {history} from "../_helpers/history";
+
+let title = 'asc';
 
 export const bookActions = {
     getAll,
     getBook,
     create,
     update,
+    sort,
     _delete: _delete
 };
 
@@ -27,9 +30,17 @@ function getAll() {
             );
     };
 
-    function request() { return { type: bookConstants.GET_ALL_BOOKS_REQUEST } }
-    function success(books) { return { type: bookConstants.GET_ALL_BOOKS_SUCCESS, books } }
-    function failure(error) { return { type: bookConstants.GET_ALL_BOOKS_FAILURE, error } }
+    function request() {
+        return {type: bookConstants.GET_ALL_BOOKS_REQUEST}
+    }
+
+    function success(books) {
+        return {type: bookConstants.GET_ALL_BOOKS_SUCCESS, books}
+    }
+
+    function failure(error) {
+        return {type: bookConstants.GET_ALL_BOOKS_FAILURE, error}
+    }
 }
 
 function getBook(bookId) {
@@ -69,7 +80,7 @@ function create(book) {
             .then(
                 book => {
                     dispatch(success(book));
-                    history.push('/books/'+ book.id);
+                    history.push('/books/' + book.id);
                 },
                 error => {
                     dispatch(failure(error));
@@ -137,7 +148,25 @@ function _delete(id) {
             );
     };
 
-    function request(id) { return { type: bookConstants.DELETE_BOOK_REQUEST, id } }
-    function success(id) { return { type: bookConstants.DELETE_BOOK_SUCCESS, id } }
-    function failure(id, error) { return { type: bookConstants.DELETE_BOOK_FAILURE, id, error } }
+    function request(id) {
+        return {type: bookConstants.DELETE_BOOK_REQUEST, id}
+    }
+
+    function success(id) {
+        return {type: bookConstants.DELETE_BOOK_SUCCESS, id}
+    }
+
+    function failure(id, error) {
+        return {type: bookConstants.DELETE_BOOK_FAILURE, id, error}
+    }
+}
+
+function sort(key, order) {
+    return dispatch => {
+        dispatch(success({key: key, order: order}));
+    };
+
+    function success(sort) {
+        return {type: bookConstants.BOOK_SORT, sort}
+    }
 }

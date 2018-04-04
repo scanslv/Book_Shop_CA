@@ -1,17 +1,27 @@
 import { allUsersConstants } from '../_constants';
 
+const SORT_ASC = 'asc';
+const SORT_DESC = 'desc';
+
+const defaultSortKey = 'id';
+const defaultSortOrder = SORT_ASC;
+
 const initialState = {
-    gettingUsers: true
+    gettingUsers: true,
+    sortKey: defaultSortKey,
+    sortOrder: defaultSortOrder
 };
 
 export function allUsers(state = initialState, action) {
     switch (action.type) {
         case allUsersConstants.GET_ALL_USERS_REQUEST:
             return {
+                ...state,
                 gettingUsers: true
             };
         case allUsersConstants.GET_ALL_USERS_SUCCESS:
             return {
+                ...state,
                 gettingUsers: false,
                 users: action.users
             };
@@ -49,6 +59,12 @@ export function allUsers(state = initialState, action) {
             };
         case allUsersConstants.UPDATE_USER_FAILURE:
             return {};
+        case allUsersConstants.USER_SORT:
+            return {
+                ...state,
+                sortKey: action.sort.key,
+                sortOrder: action.sort.order
+            };
         default:
             return state
     }
