@@ -1,0 +1,87 @@
+$accent_material_light: #f44336;
+$primary_dark_material_light: #d34a00;
+$primary_material_light: #ff6600;
+$background_material_light: #ededed;
+$white: #ffffff;
+$black: #000000;
+$black_lighter: rgba(65, 65, 65, 0.86);
+$primary_material: #9b9b9b;
+
+html,
+body {
+  height: 100%;
+  background-color: $background_material_light;
+}
+
+.jumbotron {
+  margin-bottom: 0;
+}
+
+hr {
+  border-top: 1px solid $black;
+}
+
+#app {
+  height: 100%;
+}
+
+.navbar {
+  background-color: $primary_material_light;
+  border-color: $accent_material_light;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: $white;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover {
+  color: $background_material_light;
+}
+
+.navbar-inverse .navbar-brand {
+  color: $black;
+}
+
+.navbar-inverse .navbar-brand:hover {
+  color: $black_lighter;
+}
+
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover {
+  background-color: $accent_material_light;
+}
+
+td, th > .description {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+th {
+  cursor: default;
+}
+
+.not_first:hover {
+  background-color: $primary_material !important;
+  cursor: pointer;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.image {
+  max-width: 200px;
+  padding: 10px;
+}
+
+.imageSmall {
+  max-width: 75px;
+  padding: 2px;
+}
+
+.box{
+  border: 1px solid $primary_material;
+  padding: 10px;
+}
