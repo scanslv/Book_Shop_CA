@@ -4,7 +4,8 @@ import {history} from "../_helpers/history";
 
 export const basketActions = {
     addBook,
-    removeBook
+    removeBook,
+    sort
 };
 
 function addBook(book) {
@@ -24,5 +25,15 @@ function removeBook(book) {
 
     function success(book) {
         return {type: basketConstants.REMOVE_BOOK_SUCCESS, book}
+    }
+}
+
+function sort(key, order) {
+    return dispatch => {
+        dispatch(success({key: key, order: order}));
+    };
+
+    function success(sort) {
+        return {type: basketConstants.BASKET_BOOK_SORT, sort}
     }
 }

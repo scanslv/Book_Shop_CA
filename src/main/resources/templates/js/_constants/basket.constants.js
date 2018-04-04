@@ -3,4 +3,6 @@ export const basketConstants = {
     ADD_BOOK_SUCCESS: 'ADD_BOOK_SUCCESS',
 
     REMOVE_BOOK_SUCCESS: 'REMOVE_BOOK_SUCCESS',
+
+    BASKET_BOOK_SORT: 'BASKET_BOOK_SORT',
 };
