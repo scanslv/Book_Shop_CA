@@ -12,6 +12,7 @@ import {LogoutPage} from '../pages/LogoutPage';
 import {DefaultPage} from '../pages/DefaultPage';
 import {AllUsersPage, ShowUserPage} from '../pages/AllUsersPage';
 import {ShowBookPage, NewBookPage} from '../pages/AllBooksPage';
+import {ShowBasketPage} from '../pages/BasketPage';
 
 require('../../../static/scss/style.scss');
 
@@ -46,6 +47,7 @@ class App extends React.Component {
                                     <Route path="/register" component={RegisterPage}/>
                                     <AdminRoute exact path="/books/new" component={NewBookPage}/>
                                     <Route path="/books/:id" component={ShowBookPage}/>
+                                    <Route path="/basket" component={ShowBasketPage}/>
                                     <Route path="/404" component={DefaultPage}/>
                                 </Switch>
                             </div>

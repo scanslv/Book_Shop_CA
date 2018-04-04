@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 
 class Navigation extends React.Component {
     render() {
-        const {user, loggedIn} = this.props;
+        const {user, loggedIn, booksInBasket} = this.props;
 
         return (
             <Navbar inverse collapseOnSelect className='navigation'>
@@ -34,7 +34,7 @@ class Navigation extends React.Component {
                         </Nav>)}
                     <Nav pullRight>
                         <LinkContainer to="/basket">
-                            <NavItem>Basket</NavItem>
+                            <NavItem>Basket ({getCount(booksInBasket)})</NavItem>
                         </LinkContainer>
                         {loggedIn ? (
                             <LinkContainer to="/logout">
@@ -52,11 +52,23 @@ class Navigation extends React.Component {
     }
 }
 
+function getCount(booksInBasket){
+    let count = 0;
+
+    for(let i = 0; i< booksInBasket.length; i++){
+        count = count + booksInBasket[i].quantity;
+    }
+
+    return count;
+}
+
 function mapStateToProps(state) {
     const {user, loggedIn} = state.authentication;
+    const {booksInBasket} = state.basket;
     return {
         user,
-        loggedIn
+        loggedIn,
+        booksInBasket
     };
 }
 

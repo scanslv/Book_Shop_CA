@@ -18,7 +18,8 @@ class NewBookPage extends React.Component {
             title: "",
             author: "",
             category: bookConstants.BOOK_CATEGORIES[0],
-            price: ""
+            price: "",
+            available: 0
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -41,22 +42,27 @@ class NewBookPage extends React.Component {
 
     save() {
         this.setState({submitted: true});
-        const {image, title, author, category, price} = this.state;
+        const {image, title, author, category, price, available} = this.state;
         const book = {
             image: image,
             title: title,
             author: author,
             category: category,
-            price: price
+            price: price,
+            available: available
         };
-        if (title && title.length > 0 && author && author.length > 0 && category.length > 0 && price && !isNaN(price) && price > 0) {
+        if (title && title.length > 0 &&
+            author && author.length > 0 &&
+            category.length > 0 &&
+            price && !isNaN(price) && price > 0 &&
+            isInt(available) && available > 0) {
             this.props.dispatch(bookActions.create(book));
         }
     }
 
     render() {
         const {creatingBook} = this.props;
-        const {submitted, image, title, author, category, price} = this.state;
+        const {submitted, image, title, author, category, price, available} = this.state;
         return (
             <div>
                 <Navigation/>
@@ -77,7 +83,8 @@ class NewBookPage extends React.Component {
                             }
                         </div>
 
-                        <input id={'chooser'} className={'hidden'} type="file" name='image' onChange={this.handleChange} />
+                        <input id={'chooser'} className={'hidden'} type="file" name='image'
+                               onChange={this.handleChange}/>
 
                         <div className={'text-center'}>
                             <button name="image"
@@ -88,14 +95,6 @@ class NewBookPage extends React.Component {
                                     onClick={this.deleteImage}>Delete
                             </button>
                         </div>
-
-
-                        {/*<div className={'form-group'}>*/}
-                            {/*<label htmlFor="image">Image</label>*/}
-                            {/*<input type="text" className="form-control" name="image"*/}
-                                   {/*value={image}*/}
-                                   {/*onChange={this.handleChange}/>*/}
-                        {/*</div>*/}
 
                         <div className={'form-group' + (submitted && !title ? ' has-error' : '')}>
                             <label htmlFor="title">Title</label>
@@ -128,12 +127,24 @@ class NewBookPage extends React.Component {
                             />
                         </div>
 
-                        <div className={'form-group' + (submitted && (!price || isNaN(price) || price < 0) ? ' has-error' : '')}>
+                        <div
+                            className={'form-group' + (submitted && (!isInt(available) || available < 0) ? ' has-error' : '')}>
+                            <label htmlFor="available">Available</label>
+                            <input type="text" className="form-control" name="available"
+                                   value={available}
+                                   onChange={this.handleChange}/>
+                            {submitted && (!isInt(available) || available < 0) &&
+                            <div className="help-block">Enter valid available quantity</div>
+                            }
+                        </div>
+
+                        <div
+                            className={'form-group' + (submitted && ((!price && price !== 0) || isNaN(price) || price < 0) ? ' has-error' : '')}>
                             <label htmlFor="price">Price</label>
                             <input type="text" className="form-control" name="price"
                                    value={price}
                                    onChange={this.handleChange}/>
-                            {submitted && !price &&
+                            {submitted && (!price && price !== 0) &&
                             <div className="help-block">Price is required</div>
                             }
                             {submitted && (isNaN(price) || price < 0) &&
@@ -155,6 +166,10 @@ class NewBookPage extends React.Component {
             </div>
         );
     }
+}
+
+function isInt(value) {
+    return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value))
 }
 
 function mapStateToProps(state) {
