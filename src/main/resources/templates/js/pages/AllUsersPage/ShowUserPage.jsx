@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Navigation, Loader, Comments} from "../../_components/index";
 import {allUsersActions, userActions} from '../../_actions/index'
-import {DateTimePicker, SelectList, Combobox} from 'react-widgets'
+import {DateTimePicker, Combobox} from 'react-widgets'
 import Moment from 'moment'
 import momentLocalizer from 'react-widgets-moment'
 import {history} from "../../_helpers/history";
@@ -220,20 +220,20 @@ class ShowUserPage extends React.Component {
                                 <div className="col-md-6">
                                     {user.address ?
                                         <button className="btn btn-primary btn-block" disabled={editing}
-                                                onClick={() => history.push(loggedUser.id + '/address')}>View/Edit Address</button>
+                                                onClick={() => history.push(user.id + '/address')}>View/Edit Address</button>
                                         :
                                         <button className="btn btn-primary btn-block" disabled={editing}
-                                                onClick={() => history.push(loggedUser.id + '/newaddress')}>Add
+                                                onClick={() => history.push(user.id + '/newaddress')}>Add
                                             Address</button>
                                     }
                                 </div>
                                 <div className="col-md-6">
                                     {user.card ?
                                         <button className="btn btn-primary btn-block" disabled={editing}
-                                                onClick={this.edit}>View/Edit Payment Card</button>
+                                                onClick={() => history.push(user.id + '/card')}>View/Edit Payment Card</button>
                                         :
                                         <button className="btn btn-primary btn-block" disabled={editing}
-                                                onClick={this.edit}>Add Payment Card</button>
+                                                onClick={() => history.push(user.id + '/newcard')}>Add Payment Card</button>
                                     }
                                 </div>
                             </div>

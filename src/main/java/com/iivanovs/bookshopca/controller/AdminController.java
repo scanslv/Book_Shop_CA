@@ -1,16 +1,16 @@
 package com.iivanovs.bookshopca.controller;
 
 import com.iivanovs.bookshopca.entity.Address;
+import com.iivanovs.bookshopca.entity.Card;
 import com.iivanovs.bookshopca.entity.User;
 import com.iivanovs.bookshopca.service.AddressServiceImpl;
+import com.iivanovs.bookshopca.service.CardServiceImpl;
 import com.iivanovs.bookshopca.service.UserServiceImpl;
-import com.iivanovs.bookshopca.util.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +28,9 @@ public class AdminController {
 
     @Autowired
     private AddressServiceImpl addressService;
+
+    @Autowired
+    private CardServiceImpl cardService;
 
     @RequestMapping(params = {"id"}, method = RequestMethod.GET)
     public ResponseEntity<?> getById(@RequestParam("id") long id) {
@@ -71,7 +74,7 @@ public class AdminController {
     }
 
     @RequestMapping(path = "/createaddress", method = RequestMethod.POST)
-    ResponseEntity<?> create(@RequestParam("id") long user_id,
+    ResponseEntity<?> createAddress(@RequestParam("id") long user_id,
                              @RequestBody Address address) {
         User user = this.addressService.create(user_id, address);
 
@@ -83,7 +86,7 @@ public class AdminController {
     }
 
     @RequestMapping(path = "/updateaddress", method = RequestMethod.PUT)
-    ResponseEntity<?> update(@RequestParam("id") long user_id,
+    ResponseEntity<?> updateAddress(@RequestParam("id") long user_id,
                              @RequestBody Address address) {
         User user = this.addressService.update(user_id, address);
 
@@ -100,6 +103,41 @@ public class AdminController {
 
         if (user == null)
             return ResponseEntity.status(404).body("Can't delete address");
+        else {
+            return ResponseEntity.ok(user);
+        }
+    }
+
+    @RequestMapping(path = "/createcard", method = RequestMethod.POST)
+    ResponseEntity<?> createCard(@RequestParam("id") long user_id,
+                             @RequestBody Card card) {
+        User user = this.cardService.create(user_id, card);
+
+        if (user == null)
+            return ResponseEntity.status(404).body("Can't create card");
+        else {
+            return ResponseEntity.ok(user);
+        }
+    }
+
+    @RequestMapping(path = "/updatecard", method = RequestMethod.PUT)
+    ResponseEntity<?> updateCard(@RequestParam("id") long user_id,
+                             @RequestBody Card card) {
+        User user = this.cardService.update(user_id, card);
+
+        if (user == null)
+            return ResponseEntity.status(404).body("Can't update card");
+        else {
+            return ResponseEntity.ok(user);
+        }
+    }
+
+    @RequestMapping(path = "/deletecard", method = RequestMethod.DELETE)
+    ResponseEntity<?> deleteCard(@RequestParam("id") long user_id) {
+        User user = this.cardService.delete(user_id);
+
+        if (user == null)
+            return ResponseEntity.status(404).body("Can't delete card");
         else {
             return ResponseEntity.ok(user);
         }
