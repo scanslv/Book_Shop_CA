@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {history} from '../../_helpers/index';
 import {Redirect} from 'react-router-dom'
 import {Navigation, Loader} from '../../_components/index'
-import {sortList} from '../../_helpers/index'
+import {sortList, getRating} from '../../_helpers/index'
 
 import {userActions, bookActions, basketActions} from '../../_actions/index';
 
@@ -60,6 +60,8 @@ class HomePage extends React.Component {
                         <td style={vMiddle}>{book.category}</td>
                         <td style={vMiddle}>{book.available}</td>
                         <td style={vMiddle}>{(book.price).toFixed(2) + ' EUR'}</td>
+                        <td style={vMiddle}>{getRating(book.comments)}</td>
+                        <td style={vMiddle}>{book.comments.length}</td>
                         <td style={vMiddle}>
                             <button onClick={(e) => {
                                 e.stopPropagation();
@@ -98,35 +100,56 @@ class HomePage extends React.Component {
                                             <tbody>
                                             <tr>
                                                 <th>Cover</th>
-                                                <th className='description not_first' onClick={() => this.sort('title', sortOrder==='asc' ? 'desc' : 'asc')}>
+                                                <th className='description not_first'
+                                                    onClick={() => this.sort('title', sortOrder === 'asc' ? 'desc' : 'asc')}>
                                                     {sortKey === 'title' && (sortOrder === 'asc' ?
-                                                    <img className={'icon'} src={'/main/resources/static/images/az.png'}/> :
-                                                    <img className={'icon'} src={'/main/resources/static/images/za.png'}/>)}
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/az.png'}/> :
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/za.png'}/>)}
                                                     Title
                                                 </th>
-                                                <th className='not_first' onClick={() => this.sort('author', sortOrder==='asc' ? 'desc' : 'asc')}>
+                                                <th className='not_first'
+                                                    onClick={() => this.sort('author', sortOrder === 'asc' ? 'desc' : 'asc')}>
                                                     {sortKey === 'author' && (sortOrder === 'asc' ?
-                                                    <img className={'icon'} src={'/main/resources/static/images/az.png'}/> :
-                                                    <img className={'icon'} src={'/main/resources/static/images/za.png'}/>)}
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/az.png'}/> :
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/za.png'}/>)}
                                                     Author
                                                 </th>
-                                                <th className='not_first' onClick={() => this.sort('category', sortOrder==='asc' ? 'desc' : 'asc')}>
+                                                <th className='not_first'
+                                                    onClick={() => this.sort('category', sortOrder === 'asc' ? 'desc' : 'asc')}>
                                                     {sortKey === 'category' && (sortOrder === 'asc' ?
-                                                        <img className={'icon'} src={'/main/resources/static/images/az.png'}/> :
-                                                        <img className={'icon'} src={'/main/resources/static/images/za.png'}/>)}
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/az.png'}/> :
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/za.png'}/>)}
                                                     Category
                                                 </th>
-                                                <th className='not_first' onClick={() => this.sort('available', sortOrder==='asc' ? 'desc' : 'asc')}>
+                                                <th className='not_first'
+                                                    onClick={() => this.sort('available', sortOrder === 'asc' ? 'desc' : 'asc')}>
                                                     {sortKey === 'available' && (sortOrder === 'asc' ?
-                                                        <img className={'icon'} src={'/main/resources/static/images/09.png'}/> :
-                                                        <img className={'icon'} src={'/main/resources/static/images/90.png'}/>)}
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/09.png'}/> :
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/90.png'}/>)}
                                                     Available
                                                 </th>
-                                                <th className='not_first' onClick={() => this.sort('price', sortOrder==='asc' ? 'desc' : 'asc')}>
+                                                <th className='not_first'
+                                                    onClick={() => this.sort('price', sortOrder === 'asc' ? 'desc' : 'asc')}>
                                                     {sortKey === 'price' && (sortOrder === 'asc' ?
-                                                        <img className={'icon'} src={'/main/resources/static/images/09.png'}/> :
-                                                        <img className={'icon'} src={'/main/resources/static/images/90.png'}/>)}
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/09.png'}/> :
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/90.png'}/>)}
                                                     Price
+                                                </th>
+                                                <th>
+                                                    Rating
+                                                </th>
+                                                <th>
+                                                    Comments
                                                 </th>
                                                 <th></th>
                                             </tr>

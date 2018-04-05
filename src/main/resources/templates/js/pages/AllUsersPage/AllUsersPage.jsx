@@ -36,6 +36,7 @@ class AllUsersPage extends React.Component {
                         <td>{user.surname}</td>
                         <td>{user.email}</td>
                         <td>{user.role}</td>
+                        <td>{user.comments.length}</td>
                         <td>{Moment(user.reg_date).format('lll')}</td>
                         <td>{Moment(user.mod_date).format('lll')}</td>
                     </tr>
@@ -97,6 +98,9 @@ class AllUsersPage extends React.Component {
                                             <img className={'icon'} src={'/main/resources/static/images/az.png'}/> :
                                             <img className={'icon'} src={'/main/resources/static/images/za.png'}/>)}
                                         Role
+                                    </th>
+                                    <th>
+                                        Comments
                                     </th>
                                     <th className='not_first'
                                         onClick={() => this.sort('reg_date', sortOrder === 'asc' ? 'desc' : 'asc')}>

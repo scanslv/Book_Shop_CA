@@ -1,4 +1,4 @@
-import {bookConstants} from '../_constants';
+import {bookConstants, commentConstants} from '../_constants';
 
 const SORT_ASC = 'asc';
 const SORT_DESC = 'desc';
@@ -27,15 +27,18 @@ export function book(state = initialState, action) {
             };
         case bookConstants.GET_ALL_BOOKS_FAILURE:
             return {};
+        case commentConstants.POST_COMMENT_REQUEST:
         case bookConstants.GET_BOOK_REQUEST:
             return {
                 gettingBook: true
             };
+        case commentConstants.POST_COMMENT_SUCCESS:
         case bookConstants.GET_BOOK_SUCCESS:
             return {
                 gettingBook: false,
-                book: action.book
+                book: action.book,
             };
+        case commentConstants.POST_COMMENT_FAILURE:
         case bookConstants.GET_BOOK_FAILURE:
             return {};
         case bookConstants.CREATE_BOOK_REQUEST:

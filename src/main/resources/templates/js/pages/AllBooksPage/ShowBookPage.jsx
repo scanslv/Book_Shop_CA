@@ -1,11 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Navigation, Loader} from "../../_components/index";
-import {bookActions, basketActions} from '../../_actions/index'
+import {Navigation, Loader, Comments} from "../../_components/index";
+import {bookActions, basketActions, commentActions} from '../../_actions/index'
 import {DateTimePicker, SelectList, Combobox} from 'react-widgets'
 import Moment from 'moment'
 import momentLocalizer from 'react-widgets-moment'
 import {bookConstants} from '../../_constants'
+import {getRating} from "../../_helpers";
 
 require('react-widgets/lib/scss/react-widgets.scss');
 
@@ -22,7 +23,10 @@ class ShowBookPage extends React.Component {
             author: "",
             category: "",
             price: "",
-            available: 0
+            available: 0,
+            rating: 0,
+            commentSubmitted: false,
+            commentContent: ''
         };
 
         Moment.locale('en-GB');
@@ -38,6 +42,8 @@ class ShowBookPage extends React.Component {
         this.save = this.save.bind(this);
         this._delete = this._delete.bind(this);
         this.addToBasket = this.addToBasket.bind(this);
+        this.rate = this.rate.bind(this);
+        this.comment = this.comment.bind(this);
     }
 
     handleChange(e) {
@@ -64,6 +70,8 @@ class ShowBookPage extends React.Component {
             this.setState({category: nextProps.book.category});
             this.setState({price: nextProps.book.price});
             this.setState({available: nextProps.book.available});
+            this.setState({rating: 0});
+            this.setState({commentContent: ''});
         }
     }
 
@@ -105,6 +113,20 @@ class ShowBookPage extends React.Component {
         }
     }
 
+    comment() {
+        this.setState({commentSubmitted: true});
+        const {book, loggedUser} = this.props;
+        const {rating, commentContent} = this.state;
+        const comment = {
+            content: commentContent,
+            rating: rating
+        };
+
+        if (commentContent && commentContent.length > 0) {
+            this.props.dispatch(commentActions.comment(loggedUser, book, comment));
+        }
+    }
+
     _delete() {
         this.setState({submitted: true});
         const {id} = this.state;
@@ -116,9 +138,13 @@ class ShowBookPage extends React.Component {
         this.props.dispatch(basketActions.addBook(book));
     }
 
+    rate(rating) {
+        this.setState({rating: rating});
+    }
+
     render() {
         const {book, gettingBook, creatingBook, updatingBook, deletingBook, loggedUser} = this.props;
-        const {submitted, editing, image, title, author, category, price, available} = this.state;
+        const {submitted, editing, image, title, author, category, price, available, rating, commentSubmitted, commentContent} = this.state;
 
         return (
             <div>
@@ -202,7 +228,9 @@ class ShowBookPage extends React.Component {
                                        value={editing ? available : (book.available)}
                                        onChange={this.handleChange} disabled={!editing}/>
                                 {submitted && (!isInt(available) || available < 0) &&
-                                <div className="help-block">Enter valid available quantity</div>
+                                <div
+                                    className="help-+ (submitted && ((!price && price !== 0) || isNaN(price) || price < 0) ? ' has-error' : '')block">
+                                    Enter valid available quantity</div>
                                 }
                             </div>
 
@@ -218,6 +246,14 @@ class ShowBookPage extends React.Component {
                                 {submitted && (isNaN(price) || price < 0) &&
                                 <div className="help-block">Enter valid price</div>
                                 }
+                            </div>
+
+                            <div
+                                className={'form-group'}>
+                                <label htmlFor="price">Rating</label>
+                                <div>
+                                    {getRating(book.comments)}
+                                </div>
                             </div>
 
                             <hr/>
@@ -239,6 +275,42 @@ class ShowBookPage extends React.Component {
                                     </button>
                                 </div>
                             )}
+
+                            {loggedUser && !editing &&
+                            <div>
+                                <Comments comments={book.comments}/>
+                                <label htmlFor="price">Rate</label>
+                                <div className={'text-center'}>
+                                    <span className={'star'} onClick={() => this.rate(1)}>
+                                    {rating > 0 ? <span>&#9733;</span> : <span>&#9734;</span>}
+                                    </span>
+                                    <span className={'star'} onClick={() => this.rate(2)}>
+                                    {rating > 1 ? <span>&#9733;</span> : <span>&#9734;</span>}
+                                    </span>
+                                    <span className={'star'} onClick={() => this.rate(3)}>
+                                    {rating > 2 ? <span>&#9733;</span> : <span>&#9734;</span>}
+                                    </span>
+                                    <span className={'star'} onClick={() => this.rate(4)}>
+                                    {rating > 3 ? <span>&#9733;</span> : <span>&#9734;</span>}
+                                    </span>
+                                    <span className={'star'} onClick={() => this.rate(5)}>
+                                    {rating > 4 ? <span>&#9733;</span> : <span>&#9734;</span>}
+                                    </span>
+                                </div>
+
+                                <div
+                                    className={'form-group' + (commentSubmitted && !commentContent ? ' has-error' : '')}>
+                                    <textarea className={'form-control commentContent'} rows={4}
+                                              onChange={this.handleChange}
+                                              name={'commentContent'} value={commentContent}/>
+                                    {commentSubmitted && !commentContent &&
+                                    <div className="help-block">Please enter your comments</div>
+                                    }
+                                </div>
+                                <button onClick={() => this.comment(book)}
+                                        className="btn btn-primary btn-block">Comment
+                                </button>
+                            </div>}
                         </div>
                     )
                 )}
