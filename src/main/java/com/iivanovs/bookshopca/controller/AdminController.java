@@ -1,6 +1,8 @@
 package com.iivanovs.bookshopca.controller;
 
+import com.iivanovs.bookshopca.entity.Address;
 import com.iivanovs.bookshopca.entity.User;
+import com.iivanovs.bookshopca.service.AddressServiceImpl;
 import com.iivanovs.bookshopca.service.UserServiceImpl;
 import com.iivanovs.bookshopca.util.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class AdminController {
 
     @Autowired
     private UserServiceImpl userService;
+
+    @Autowired
+    private AddressServiceImpl addressService;
 
     @RequestMapping(params = {"id"}, method = RequestMethod.GET)
     public ResponseEntity<?> getById(@RequestParam("id") long id) {
@@ -63,5 +68,40 @@ public class AdminController {
             return ResponseEntity.status(404).body("Update failed");
         else
             return ResponseEntity.ok(u);
+    }
+
+    @RequestMapping(path = "/createaddress", method = RequestMethod.POST)
+    ResponseEntity<?> create(@RequestParam("id") long user_id,
+                             @RequestBody Address address) {
+        User user = this.addressService.create(user_id, address);
+
+        if (user == null)
+            return ResponseEntity.status(404).body("Can't create address");
+        else {
+            return ResponseEntity.ok(user);
+        }
+    }
+
+    @RequestMapping(path = "/updateaddress", method = RequestMethod.PUT)
+    ResponseEntity<?> update(@RequestParam("id") long user_id,
+                             @RequestBody Address address) {
+        User user = this.addressService.update(user_id, address);
+
+        if (user == null)
+            return ResponseEntity.status(404).body("Can't update address");
+        else {
+            return ResponseEntity.ok(user);
+        }
+    }
+
+    @RequestMapping(path = "/deleteaddress", method = RequestMethod.DELETE)
+    ResponseEntity<?> deleteAddress(@RequestParam("id") long user_id) {
+        User user = this.addressService.delete(user_id);
+
+        if (user == null)
+            return ResponseEntity.status(404).body("Can't delete address");
+        else {
+            return ResponseEntity.ok(user);
+        }
     }
 }

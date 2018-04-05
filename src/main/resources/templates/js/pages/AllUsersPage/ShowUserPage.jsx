@@ -5,6 +5,7 @@ import {allUsersActions, userActions} from '../../_actions/index'
 import {DateTimePicker, SelectList, Combobox} from 'react-widgets'
 import Moment from 'moment'
 import momentLocalizer from 'react-widgets-moment'
+import {history} from "../../_helpers/history";
 
 require('react-widgets/lib/scss/react-widgets.scss');
 
@@ -45,7 +46,7 @@ class ShowUserPage extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         const id = this.props.match.params.id;
         const id2 = prevProps.match.params.id;
-        if(id !== id2){
+        if (id !== id2) {
             const {dispatch} = this.props;
             dispatch(allUsersActions.getUser(id));
         }
@@ -214,6 +215,28 @@ class ShowUserPage extends React.Component {
                             </div>
 
                             <hr/>
+
+                            <div className="form-group col-md-12 text-center">
+                                <div className="col-md-6">
+                                    {user.address ?
+                                        <button className="btn btn-primary btn-block" disabled={editing}
+                                                onClick={() => history.push(loggedUser.id + '/address')}>View/Edit Address</button>
+                                        :
+                                        <button className="btn btn-primary btn-block" disabled={editing}
+                                                onClick={() => history.push(loggedUser.id + '/newaddress')}>Add
+                                            Address</button>
+                                    }
+                                </div>
+                                <div className="col-md-6">
+                                    {user.card ?
+                                        <button className="btn btn-primary btn-block" disabled={editing}
+                                                onClick={this.edit}>View/Edit Payment Card</button>
+                                        :
+                                        <button className="btn btn-primary btn-block" disabled={editing}
+                                                onClick={this.edit}>Add Payment Card</button>
+                                    }
+                                </div>
+                            </div>
 
                             <button className="btn btn-primary btn-block"
                                     onClick={this.edit}>{editing ? 'Cancel' : 'Edit'}</button>

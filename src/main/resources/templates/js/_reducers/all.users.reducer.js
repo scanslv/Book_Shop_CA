@@ -1,4 +1,4 @@
-import { allUsersConstants } from '../_constants';
+import { allUsersConstants, addressConstants } from '../_constants';
 
 const SORT_ASC = 'asc';
 const SORT_DESC = 'desc';
@@ -31,6 +31,7 @@ export function allUsers(state = initialState, action) {
             return {
                 gettingUser: true
             };
+        case addressConstants.CREATE_ADDRESS_SUCCESS:
         case allUsersConstants.SHOW_USER_SUCCESS:
             return {
                 gettingUser: false,
@@ -38,15 +39,23 @@ export function allUsers(state = initialState, action) {
             };
         case allUsersConstants.SHOW_USER_FAILURE:
             return {};
+        case addressConstants.UPDATE_ADDRESS_REQUEST:
+        case addressConstants.DELETE_ADDRESS_REQUEST:
         case allUsersConstants.UPDATE_USER_REQUEST:
             return {
                 gettingUser: true
             };
+        case addressConstants.DELETE_ADDRESS_SUCCESS:
+        case addressConstants.UPDATE_ADDRESS_SUCCESS:
         case allUsersConstants.UPDATE_USER_SUCCESS:
             return {
                 gettingUser: false,
                 user: action.user
             };
+        case addressConstants.DELETE_ADDRESS_FAILURE:
+        case addressConstants.UPDATE_ADDRESS_FAILURE:
+        case allUsersConstants.UPDATE_USER_FAILURE:
+            return {};
         case allUsersConstants.DELETE_USER_FAILURE:
             return {};
         case allUsersConstants.DELETE_USER_REQUEST:
@@ -57,8 +66,6 @@ export function allUsers(state = initialState, action) {
             return {
                 gettingUser: false
             };
-        case allUsersConstants.UPDATE_USER_FAILURE:
-            return {};
         case allUsersConstants.USER_SORT:
             return {
                 ...state,

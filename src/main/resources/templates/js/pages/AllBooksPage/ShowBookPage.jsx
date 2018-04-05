@@ -123,6 +123,7 @@ class ShowBookPage extends React.Component {
         };
 
         if (commentContent && commentContent.length > 0) {
+            this.setState({commentSubmitted: false});
             this.props.dispatch(commentActions.comment(loggedUser, book, comment));
         }
     }
