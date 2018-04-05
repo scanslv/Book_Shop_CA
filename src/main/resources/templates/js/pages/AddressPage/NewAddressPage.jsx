@@ -54,8 +54,7 @@ class NewAddressPage extends React.Component {
     }
 
     render() {
-        // const {creatingAddress} = this.props;
-        const creatingAddress = false;
+        const {creatingAddress} = this.props;
         const {submitted, line1, line2, city, postCode, country, id} = this.state;
         return (
             <div>

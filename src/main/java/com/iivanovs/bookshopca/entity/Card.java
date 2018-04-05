@@ -21,11 +21,15 @@ public class Card implements Serializable {
     @GeneratedValue(generator = "generator")
     private long id;
 
-    private String number;
+    private String type;
 
-    private String expiry;
+    private long number;
 
-    private String cvv;
+    private long expiryY;
+
+    private long expiryM;
+
+    private long cvv;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", nullable = false)
@@ -51,9 +55,11 @@ public class Card implements Serializable {
         super();
     }
 
-    public Card(String number, String expiry, String cvv) {
+    public Card(String type, long number, long expiryY, long expiryM, long cvv) {
+        this.type = type;
         this.number = number;
-        this.expiry = expiry;
+        this.expiryY = expiryY;
+        this.expiryM = expiryM;
         this.cvv = cvv;
     }
 
@@ -65,27 +71,43 @@ public class Card implements Serializable {
         this.id = id;
     }
 
-    public String getNumber() {
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public long getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(long number) {
         this.number = number;
     }
 
-    public String getExpiry() {
-        return expiry;
+    public long getExpiryY() {
+        return expiryY;
     }
 
-    public void setExpiry(String expiry) {
-        this.expiry = expiry;
+    public void setExpiryY(long expiryY) {
+        this.expiryY = expiryY;
     }
 
-    public String getCvv() {
+    public long getExpiryM() {
+        return expiryM;
+    }
+
+    public void setExpiryM(long expiryM) {
+        this.expiryM = expiryM;
+    }
+
+    public long getCvv() {
         return cvv;
     }
 
-    public void setCvv(String cvv) {
+    public void setCvv(long cvv) {
         this.cvv = cvv;
     }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Navigation, Loader, Comments} from "../../_components/index";
 import {bookActions, basketActions, commentActions} from '../../_actions/index'
-import {DateTimePicker, SelectList, Combobox} from 'react-widgets'
+import {Combobox} from 'react-widgets'
 import Moment from 'moment'
 import momentLocalizer from 'react-widgets-moment'
 import {bookConstants} from '../../_constants'

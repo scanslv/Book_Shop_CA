@@ -16,16 +16,6 @@ export function address(state = initialState, action) {
             };
         case addressConstants.CREATE_ADDRESS_FAILURE:
             return {};
-        // case addressConstants.UPDATE_ADDRESS_REQUEST:
-        //     return {
-        //         creatingAddress: true
-        //     };
-        // case addressConstants.UPDATE_ADDRESS_SUCCESS:
-        //     return {
-        //         creatingAddress: false,
-        //     };
-        // case addressConstants.UPDATE_ADDRESS_FAILURE:
-        //     return {};
         default:
             return state
     }
