@@ -40,6 +40,14 @@ public class User implements Serializable {
 
     private String role;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.REMOVE)
+    private Address address;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.REMOVE)
+    private Card card;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "reg_date", nullable = false)
     private Date reg_date;
@@ -51,10 +59,6 @@ public class User implements Serializable {
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(orphanRemoval = true, cascade = CascadeType.REMOVE)
     private List<Book> books_purchased = new ArrayList<Book>();
-
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.REMOVE)
-    private List<Book> basket = new ArrayList<Book>();
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(orphanRemoval = true, cascade = CascadeType.REMOVE)
@@ -185,19 +189,27 @@ public class User implements Serializable {
         this.books_purchased = books_purchased;
     }
 
-    public List<Book> getBasket() {
-        return basket;
-    }
-
-    public void setBasket(List<Book> basket) {
-        this.basket = basket;
-    }
-
     public List<Comment> getComments() {
         return comments;
     }
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
     }
 }

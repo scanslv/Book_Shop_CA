@@ -130,11 +130,6 @@ th {
   color: $black_lighter;
 }
 
-//#search {
-//  margin-right: 5px;
-//}
-
-
 #search {
   width: 130px;
   box-sizing: border-box;
@@ -150,7 +145,7 @@ th {
   margin-left: -25px;
 }
 
-.searchIcon{
+.searchIcon {
   margin-top: 5px;
   font-size: 20px;
   cursor: pointer;
@@ -160,9 +155,24 @@ th {
   width: 30%;
 }
 
-
 .search {
   display: flex;
   justify-content: flex-end;
   padding: 0 10px 10px;
+}
+
+.country {
+  width: 100%;
+  color: #555555;
+  background-color: #fff;
+  padding: 10px;
+  height: 29px;
+}
+
+.disabled{
+  background-color: $background_material_light;
+  width: 100%;
+  color: #555555;
+  padding: 10px;
+  height: 29px;
 }

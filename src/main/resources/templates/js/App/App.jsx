@@ -13,6 +13,7 @@ import {DefaultPage} from '../pages/DefaultPage';
 import {AllUsersPage, ShowUserPage} from '../pages/AllUsersPage';
 import {ShowBookPage, NewBookPage} from '../pages/AllBooksPage';
 import {ShowBasketPage} from '../pages/BasketPage';
+import {NewAddressPage, AddressPage} from '../pages/AddressPage';
 
 require('../../../static/scss/style.scss');
 
@@ -41,6 +42,8 @@ class App extends React.Component {
                                 <Switch>
                                     <Route exact path="/" component={HomePage}/>
                                     <Route path="/login" component={LoginPage}/>
+                                    <PrivateRoute exact path="/users/:id/newaddress" component={NewAddressPage}/>
+                                    <PrivateRoute exact path="/users/:id/address" component={AddressPage}/>
                                     <PrivateRoute path="/users/:id" component={ShowUserPage}/>
                                     <AdminRoute path="/users-all" component={AllUsersPage}/>
                                     <Route path="/logout" component={LogoutPage}/>
