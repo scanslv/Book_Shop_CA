@@ -36,6 +36,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, CHECK_EMAIL_URL).permitAll()
                 .antMatchers(HttpMethod.GET, GET_ALL_BOOKS_URL).permitAll()
                 .antMatchers(HttpMethod.GET, GET_BOOK_URL).permitAll()
+                .antMatchers(HttpMethod.GET, SEARCH_BOOK_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))

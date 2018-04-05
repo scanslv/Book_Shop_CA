@@ -26,7 +26,7 @@ class AllUsersPage extends React.Component {
     getUserRecords(users) {
         if (users.length === 0)
             return (<tr>
-                <td colSpan={7} align={'center'}>No records yet</td>
+                <td colSpan={8} align={'center'}>No records yet</td>
             </tr>);
         else
             return users.map((user) => (

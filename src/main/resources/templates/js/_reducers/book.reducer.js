@@ -1,4 +1,4 @@
-import {bookConstants, commentConstants} from '../_constants';
+import {bookConstants, commentConstants, searchConstants} from '../_constants';
 
 const SORT_ASC = 'asc';
 const SORT_DESC = 'desc';
@@ -14,17 +14,20 @@ const initialState = {
 
 export function book(state = initialState, action) {
     switch (action.type) {
+        case searchConstants.SEARCH_BOOK_REQUEST:
         case bookConstants.GET_ALL_BOOKS_REQUEST:
             return {
                 ...state,
                 gettingBooks: true
             };
+        case searchConstants.SEARCH_BOOK_SUCCESS:
         case bookConstants.GET_ALL_BOOKS_SUCCESS:
             return {
                 ...state,
                 gettingBooks: false,
                 books: action.books
             };
+        case searchConstants.SEARCH_BOOK_FAILURE:
         case bookConstants.GET_ALL_BOOKS_FAILURE:
             return {};
         case commentConstants.POST_COMMENT_REQUEST:

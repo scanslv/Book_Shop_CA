@@ -41,6 +41,7 @@ class ShowUserPage extends React.Component {
         const {name, value} = e.target;
         this.setState({[name]: (value ? value : null)});
     }
+
     componentDidUpdate(prevProps, prevState) {
         const id = this.props.match.params.id;
         const id2 = prevProps.match.params.id;

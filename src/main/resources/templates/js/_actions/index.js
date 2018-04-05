@@ -4,3 +4,4 @@ export * from './book.actions';
 export * from './all.users.actions';
 export * from './basket.actions';
 export * from './comment.actions';
+export * from './search.actions';

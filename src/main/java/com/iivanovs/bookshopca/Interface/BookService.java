@@ -10,6 +10,8 @@ public interface BookService {
 
     public Optional<Book> getOne(long id);
 
+    public List<Book> search(String query);
+
     public Book create(Book book);
 
     public Book update(Book book);
