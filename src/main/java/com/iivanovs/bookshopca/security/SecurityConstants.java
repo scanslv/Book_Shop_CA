@@ -10,4 +10,5 @@ public class SecurityConstants {
     public static final String CHECK_EMAIL_URL = "/user/checkemail";
     public static final String GET_ALL_BOOKS_URL = "/book/getall";
     public static final String GET_BOOK_URL = "/book/getbook";
+    public static final String SEARCH_BOOK_URL = "/book/search";
 }

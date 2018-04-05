@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {history} from '../../_helpers/index';
 import {Redirect} from 'react-router-dom'
-import {Navigation, Loader} from '../../_components/index'
+import {Navigation, Loader, Search} from '../../_components/index'
 import {sortList, getRating} from '../../_helpers/index'
 
 import {userActions, bookActions, basketActions} from '../../_actions/index';
@@ -41,7 +41,7 @@ class HomePage extends React.Component {
         };
         if (books.length === 0)
             return (<tr>
-                <td colSpan={6} align={'center'}>Nothing to show yet</td>
+                <td colSpan={9} align={'center'}>Nothing to show yet</td>
             </tr>);
         else
             return books.map((book) => (
@@ -82,6 +82,7 @@ class HomePage extends React.Component {
         return (
             <div>
                 <Navigation/>
+                <Search/>
                 {gettingBooks ? (
                     <Loader/>
                 ) : (

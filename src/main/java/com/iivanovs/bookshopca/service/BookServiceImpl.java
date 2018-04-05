@@ -6,6 +6,7 @@ import com.iivanovs.bookshopca.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,21 @@ public class BookServiceImpl implements BookService {
     @Override
     public Optional<Book> getOne(long id) {
         return bookRepository.findById(id);
+    }
+
+    @Override
+    public List<Book> search(String query) {
+        List<Book> books = (List<Book>) bookRepository.findAll();
+        List<Book> foundBooks = new ArrayList<>();
+
+        for (Book book : books) {
+            if (book.getCategory().equalsIgnoreCase(query) ||
+                    book.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                    book.getAuthor().toLowerCase().contains(query.toLowerCase()))
+                foundBooks.add(book);
+        }
+
+        return foundBooks;
     }
 
     @Override

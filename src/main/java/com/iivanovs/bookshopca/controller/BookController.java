@@ -43,6 +43,17 @@ public class BookController {
         }
     }
 
+    @RequestMapping(path = "/search", method = RequestMethod.GET)
+    ResponseEntity<?> search(@RequestParam("query") String query) {
+        List<Book> books = this.bookService.search(query);
+
+        if (books== null)
+            return ResponseEntity.status(404).body("Can't get books");
+        else {
+            return ResponseEntity.ok(books);
+        }
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity<?> create(@RequestBody Book book) {
