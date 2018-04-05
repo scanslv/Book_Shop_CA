@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Navigation, Loader} from "../../_components/index";
+import {Navigation, Loader, Comments} from "../../_components/index";
 import {allUsersActions, userActions} from '../../_actions/index'
 import {DateTimePicker, SelectList, Combobox} from 'react-widgets'
 import Moment from 'moment'
@@ -224,6 +224,8 @@ class ShowUserPage extends React.Component {
                             <button className={'btn btn-danger btn-block' + (!editing ? '' : ' hidden')}
                                     onClick={this._delete}>Delete
                             </button>
+
+                            <Comments comments={user.comments}/>
                         </div>
                     )
                 )}

@@ -1,11 +1,15 @@
 package com.iivanovs.bookshopca.entity;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Book implements Serializable {
@@ -27,6 +31,10 @@ public class Book implements Serializable {
     private String image;
 
     private long available;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<Comment>();
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", nullable = false)
@@ -131,5 +139,13 @@ public class Book implements Serializable {
 
     public void setAvailable(long available) {
         this.available = available;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

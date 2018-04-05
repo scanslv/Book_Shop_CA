@@ -32,6 +32,7 @@
     "respinner": "^2.2.1",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3",
+    "uniqid": "^4.1.1",
     "url-loader": "^1.0.1"
   },
   "devDependencies": {

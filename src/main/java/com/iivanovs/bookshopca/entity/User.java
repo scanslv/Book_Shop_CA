@@ -56,6 +56,10 @@ public class User implements Serializable {
     @OneToMany(orphanRemoval = true, cascade = CascadeType.REMOVE)
     private List<Book> basket = new ArrayList<Book>();
 
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<Comment>();
+
     @PrePersist
     protected void onCreate() {
         Date date = Calendar.getInstance().getTime();
@@ -187,5 +191,13 @@ public class User implements Serializable {
 
     public void setBasket(List<Book> basket) {
         this.basket = basket;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }
