@@ -34,7 +34,6 @@ class HomePage extends React.Component {
         this.props.dispatch(bookActions.sort(key, order));
     }
 
-
     getBooks(books) {
         const vMiddle = {
             verticalAlign: 'middle'
@@ -146,10 +145,22 @@ class HomePage extends React.Component {
                                                              src={'/main/resources/static/images/90.png'}/>)}
                                                     Price
                                                 </th>
-                                                <th>
+                                                <th className='not_first'
+                                                    onClick={() => this.sort('rating', sortOrder === 'asc' ? 'desc' : 'asc')}>
+                                                    {sortKey === 'rating' && (sortOrder === 'asc' ?
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/09.png'}/> :
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/90.png'}/>)}
                                                     Rating
                                                 </th>
-                                                <th>
+                                                <th className='not_first'
+                                                    onClick={() => this.sort('comments', sortOrder === 'asc' ? 'desc' : 'asc')}>
+                                                    {sortKey === 'comments' && (sortOrder === 'asc' ?
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/09.png'}/> :
+                                                        <img className={'icon'}
+                                                             src={'/main/resources/static/images/90.png'}/>)}
                                                     Comments
                                                 </th>
                                                 <th></th>

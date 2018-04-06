@@ -8,3 +8,4 @@ export * from './address.actions';
 export * from './card.actions';
 export * from './checkout.actions';
 export * from './search.actions';
+export * from './orderHistory.actions';

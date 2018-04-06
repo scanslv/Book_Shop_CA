@@ -145,8 +145,20 @@ class ShowBasketPage extends React.Component {
                                     <img className={'icon'} src={'/main/resources/static/images/90.png'}/>)}
                                 Price
                             </th>
-                            <th>Order quantity</th>
-                            <th>Total</th>
+                            <th className='not_first'
+                                onClick={() => this.sort('quantity', sortOrder === 'asc' ? 'desc' : 'asc')}>
+                                {sortKey === 'quantity' && (sortOrder === 'asc' ?
+                                    <img className={'icon'} src={'/main/resources/static/images/09.png'}/> :
+                                    <img className={'icon'} src={'/main/resources/static/images/90.png'}/>)}
+                                Order quantity
+                            </th>
+                            <th className='not_first'
+                                onClick={() => this.sort('total', sortOrder === 'asc' ? 'desc' : 'asc')}>
+                                {sortKey === 'total' && (sortOrder === 'asc' ?
+                                    <img className={'icon'} src={'/main/resources/static/images/09.png'}/> :
+                                    <img className={'icon'} src={'/main/resources/static/images/90.png'}/>)}
+                                Total
+                            </th>
                             <th></th>
                         </tr>
                         {this.getBooks(sortList(booksInBasket, sortKey, sortOrder))}
