@@ -9,12 +9,13 @@ import {HomePage} from '../pages/HomePage';
 import {LoginPage} from '../pages/LoginPage';
 import {RegisterPage} from '../pages/RegisterPage';
 import {LogoutPage} from '../pages/LogoutPage';
-import {DefaultPage} from '../pages/DefaultPage';
+import {DefaultPage, DonePage} from '../pages/DefaultPage';
 import {AllUsersPage, ShowUserPage} from '../pages/AllUsersPage';
 import {ShowBookPage, NewBookPage} from '../pages/AllBooksPage';
 import {ShowBasketPage} from '../pages/BasketPage';
 import {NewAddressPage, AddressPage} from '../pages/AddressPage';
 import {NewCardPage, CardPage} from '../pages/CardPage';
+import {CheckoutPage} from "../pages/CheckoutPage";
 
 require('../../../static/scss/style.scss');
 
@@ -54,7 +55,9 @@ class App extends React.Component {
                                     <AdminRoute exact path="/books/new" component={NewBookPage}/>
                                     <Route path="/books/:id" component={ShowBookPage}/>
                                     <Route path="/basket" component={ShowBasketPage}/>
+                                    <PrivateRoute path="/checkout" component={CheckoutPage}/>
                                     <Route path="/404" component={DefaultPage}/>
+                                    <PrivateRoute path="/done" component={DonePage}/>
                                 </Switch>
                             </div>
                         </Router>

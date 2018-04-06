@@ -16,8 +16,16 @@ function create(id, card) {
         cardService.create(id, card)
             .then(
                 user => {
-                    dispatch(success(user));
-                    history.push('card')
+                    if (JSON.parse(localStorage.getItem('user')).id === parseInt(id))
+                        dispatch(successThis(user));
+                    else
+                        dispatch(success(user));
+                    if (localStorage.getItem('url') === 'basket') {
+                        localStorage.removeItem('url');
+                        history.push('/checkout');
+                    }
+                    else
+                        history.push('card')
                 },
                 error => {
                     dispatch(failure(error));
@@ -34,6 +42,10 @@ function create(id, card) {
         return {type: cardConstants.CREATE_CARD_SUCCESS, user}
     }
 
+    function successThis(user) {
+        return {type: cardConstants.CREATE_CARD_THIS_SUCCESS, user}
+    }
+
     function failure(error) {
         return {type: cardConstants.CREATE_CARD_FAILURE, error}
     }
@@ -46,7 +58,10 @@ function update(id, card) {
         cardService.update(id, card)
             .then(
                 user => {
-                    dispatch(success(user));
+                    if (JSON.parse(localStorage.getItem('user')).id === parseInt(id))
+                        dispatch(successThis(user));
+                    else
+                        dispatch(success(user));
                 },
                 error => {
                     dispatch(failure(error));
@@ -63,6 +78,10 @@ function update(id, card) {
         return {type: cardConstants.UPDATE_CARD_SUCCESS, user}
     }
 
+    function successThis(user) {
+        return {type: cardConstants.UPDATE_CARD_THIS_SUCCESS, user}
+    }
+
     function failure(error) {
         return {type: cardConstants.UPDATE_CARD_FAILURE, error}
     }
@@ -75,8 +94,16 @@ function _delete(user_id) {
         cardService._delete(user_id)
             .then(
                 user => {
-                    dispatch(success(user));
-                    history.push('/users/' + user_id)
+                    if (JSON.parse(localStorage.getItem('user')).id === parseInt(user_id))
+                        dispatch(successThis(user));
+                    else
+                        dispatch(success(user));
+                    if (localStorage.getItem('url') === 'basket') {
+                        localStorage.removeItem('url');
+                        history.push('/checkout');
+                    }
+                    else
+                        history.push('card')
                 },
                 error => {
                     dispatch(failure(error));
@@ -91,6 +118,10 @@ function _delete(user_id) {
 
     function success(user) {
         return {type: cardConstants.DELETE_CARD_SUCCESS, user}
+    }
+
+    function successThis(user) {
+        return {type: cardConstants.DELETE_CARD_THIS_SUCCESS, user}
     }
 
     function failure(error) {

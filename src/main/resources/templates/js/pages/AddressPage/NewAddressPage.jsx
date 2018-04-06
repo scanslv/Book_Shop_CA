@@ -55,6 +55,7 @@ class NewAddressPage extends React.Component {
 
     render() {
         const {creatingAddress} = this.props;
+        // const creatingAddress = false;
         const {submitted, line1, line2, city, postCode, country, id} = this.state;
         return (
             <div>
@@ -118,7 +119,13 @@ class NewAddressPage extends React.Component {
                         </button>
 
                         <button className={'btn btn-danger btn-block'}
-                                onClick={() => history.push('/users/' + id)}>Cancel
+                                onClick={() => {
+                                    if (localStorage.getItem('url') === 'basket') {
+                                        localStorage.removeItem('url');
+                                        history.push('/checkout');
+                                    } else
+                                        history.push('/users/' + id)
+                                }}>Cancel
                         </button>
                     </div>
                 )}

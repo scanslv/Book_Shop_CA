@@ -11,6 +11,7 @@ export function card(state = initialState, action) {
                 creatingCard: true
             };
         case cardConstants.CREATE_CARD_SUCCESS:
+        case cardConstants.CREATE_CARD_THIS_SUCCESS:
             return {
                 creatingCard: false,
             };

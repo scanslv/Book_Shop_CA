@@ -66,8 +66,16 @@ td, th > .description {
   text-overflow: ellipsis;
 }
 
+td, th{
+  text-align: center;
+}
+
 th {
   cursor: default;
+}
+
+.right {
+  text-align: right;
 }
 
 .not_first:hover {
@@ -175,4 +183,10 @@ th {
   color: #555555;
   padding: 10px;
   height: 29px;
+}
+
+.overorder{
+  font-size: 16px;
+  color: $accent_material_light;
+  background-color: bisque !important;
 }

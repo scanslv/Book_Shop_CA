@@ -32,7 +32,9 @@ export function allUsers(state = initialState, action) {
                 gettingUser: true
             };
         case addressConstants.CREATE_ADDRESS_SUCCESS:
+        case addressConstants.CREATE_ADDRESS_THIS_SUCCESS:
         case cardConstants.CREATE_CARD_SUCCESS:
+        case cardConstants.CREATE_CARD_THIS_SUCCESS:
         case allUsersConstants.SHOW_USER_SUCCESS:
             return {
                 gettingUser: false,
@@ -49,9 +51,13 @@ export function allUsers(state = initialState, action) {
                 gettingUser: true
             };
         case addressConstants.DELETE_ADDRESS_SUCCESS:
+        case addressConstants.DELETE_ADDRESS_THIS_SUCCESS:
         case addressConstants.UPDATE_ADDRESS_SUCCESS:
+        case addressConstants.UPDATE_ADDRESS_THIS_SUCCESS:
         case cardConstants.DELETE_CARD_SUCCESS:
+        case cardConstants.DELETE_CARD_THIS_SUCCESS:
         case cardConstants.UPDATE_CARD_SUCCESS:
+        case cardConstants.UPDATE_CARD_THIS_SUCCESS:
         case allUsersConstants.UPDATE_USER_SUCCESS:
             return {
                 gettingUser: false,

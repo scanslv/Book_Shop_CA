@@ -1,4 +1,4 @@
-import {basketConstants} from '../_constants';
+import {basketConstants, checkoutConstants} from '../_constants';
 
 const SORT_ASC = 'asc';
 const SORT_DESC = 'desc';
@@ -29,6 +29,12 @@ export function basket(state = initialState, action) {
                 ...state,
                 sortKey: action.sort.key,
                 sortOrder: action.sort.order
+            };
+        case checkoutConstants.BUY_SUCCESS:
+            return{
+                booksInBasket: [],
+                sortKey: defaultSortKey,
+                sortOrder: defaultSortOrder
             };
         default:
             return state
