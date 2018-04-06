@@ -16,6 +16,7 @@ import {ShowBasketPage} from '../pages/BasketPage';
 import {NewAddressPage, AddressPage} from '../pages/AddressPage';
 import {NewCardPage, CardPage} from '../pages/CardPage';
 import {CheckoutPage} from "../pages/CheckoutPage";
+import {HistoryPage} from "../pages/HistoryPage";
 
 require('../../../static/scss/style.scss');
 
@@ -48,6 +49,7 @@ class App extends React.Component {
                                     <PrivateRoute exact path="/users/:id/address" component={AddressPage}/>
                                     <PrivateRoute exact path="/users/:id/newcard" component={NewCardPage}/>
                                     <PrivateRoute exact path="/users/:id/card" component={CardPage}/>
+                                    <PrivateRoute exact path="/users/:id/history" component={HistoryPage}/>
                                     <PrivateRoute path="/users/:id" component={ShowUserPage}/>
                                     <AdminRoute path="/users-all" component={AllUsersPage}/>
                                     <Route path="/logout" component={LogoutPage}/>

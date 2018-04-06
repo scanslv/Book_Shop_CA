@@ -217,23 +217,33 @@ class ShowUserPage extends React.Component {
                             <hr/>
 
                             <div className="form-group col-md-12 text-center">
-                                <div className="col-md-6">
+                                <div className="col-md-4">
                                     {user.address ?
                                         <button className="btn btn-primary btn-block" disabled={editing}
-                                                onClick={() => history.push(user.id + '/address')}>View/Edit Address</button>
+                                                onClick={() => history.push(user.id + '/address')}>View/Edit
+                                            Address</button>
                                         :
                                         <button className="btn btn-primary btn-block" disabled={editing}
                                                 onClick={() => history.push(user.id + '/newaddress')}>Add
                                             Address</button>
                                     }
                                 </div>
-                                <div className="col-md-6">
+
+                                <div className="col-md-4">
+                                    <button className="btn btn-primary btn-block" disabled={editing}
+                                            onClick={() => history.push(user.id + '/history')}>View Purchase History
+                                    </button>
+                                </div>
+
+                                <div className="col-md-4">
                                     {user.card ?
                                         <button className="btn btn-primary btn-block" disabled={editing}
-                                                onClick={() => history.push(user.id + '/card')}>View/Edit Payment Card</button>
+                                                onClick={() => history.push(user.id + '/card')}>View/Edit Payment
+                                            Card</button>
                                         :
                                         <button className="btn btn-primary btn-block" disabled={editing}
-                                                onClick={() => history.push(user.id + '/newcard')}>Add Payment Card</button>
+                                                onClick={() => history.push(user.id + '/newcard')}>Add Payment
+                                            Card</button>
                                     }
                                 </div>
                             </div>

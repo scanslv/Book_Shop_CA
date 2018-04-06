@@ -99,7 +99,13 @@ class AllUsersPage extends React.Component {
                                             <img className={'icon'} src={'/main/resources/static/images/za.png'}/>)}
                                         Role
                                     </th>
-                                    <th>
+                                    <th className='not_first'
+                                        onClick={() => this.sort('comments', sortOrder === 'asc' ? 'desc' : 'asc')}>
+                                        {sortKey === 'comments' && (sortOrder === 'asc' ?
+                                            <img className={'icon'}
+                                                 src={'/main/resources/static/images/09.png'}/> :
+                                            <img className={'icon'}
+                                                 src={'/main/resources/static/images/90.png'}/>)}
                                         Comments
                                     </th>
                                     <th className='not_first'

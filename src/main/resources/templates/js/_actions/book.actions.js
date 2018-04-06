@@ -3,8 +3,6 @@ import {bookService} from '../_services';
 import {alertActions} from './';
 import {history} from "../_helpers/history";
 
-let title = 'asc';
-
 export const bookActions = {
     getAll,
     getBook,
