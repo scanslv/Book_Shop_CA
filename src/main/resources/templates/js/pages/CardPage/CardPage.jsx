@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Navigation, Loader, MonthBox} from "../../_components/index";
 import {allUsersActions, cardActions} from "../../_actions";
 import {Combobox} from 'react-widgets'
+import {history} from "../../_helpers";
 
 require('react-widgets/lib/scss/react-widgets.scss');
 
@@ -58,6 +59,10 @@ class CardPage extends React.Component {
             this.setState({expiryY: this.props.user.card.expiryY});
             this.setState({expiryM: this.props.user.card.expiryM});
             this.setState({cvv: this.props.user.card.cvv});
+            if (localStorage.getItem('url') === 'basket') {
+                localStorage.removeItem('url');
+                history.push('/checkout');
+            }
         }
         else
             this.setState({editing: true});
@@ -82,6 +87,10 @@ class CardPage extends React.Component {
             cvv && cvv > 0) {
             this.setState({editing: false});
             this.props.dispatch(cardActions.update(id, card));
+            if (localStorage.getItem('url') === 'basket') {
+                localStorage.removeItem('url');
+                history.push('/checkout');
+            }
         }
     }
 

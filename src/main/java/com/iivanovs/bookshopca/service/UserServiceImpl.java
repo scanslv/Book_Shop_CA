@@ -1,12 +1,15 @@
 package com.iivanovs.bookshopca.service;
 
 import com.iivanovs.bookshopca.Interface.UserService;
+import com.iivanovs.bookshopca.entity.Book;
 import com.iivanovs.bookshopca.entity.User;
+import com.iivanovs.bookshopca.repository.BookRepository;
 import com.iivanovs.bookshopca.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +18,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private BookRepository bookRepository;
 
 
     @Override
@@ -60,6 +66,40 @@ public class UserServiceImpl implements UserService {
             if (user.getRole() != null)
                 user1.setRole(user.getRole());
             return repository.save(user1);
+
+        } else
+            return null;
+    }
+
+    @Override
+    public User buy(long id, ArrayList<Book> books) {
+        Optional<User> u = repository.findById(id);
+        ArrayList<Book> bookArrayList = new ArrayList<>();
+        boolean done = true;
+        if (u.isPresent()) {
+            User user1 = u.get();
+
+            for (Book book : books) {
+                Optional<Book> b = bookRepository.findById(book.getId());
+                if (b.isPresent()) {
+                    Book thisBook = b.get();
+                    if (thisBook.getAvailable() > 0) {
+                        thisBook.setAvailable(thisBook.getAvailable() - 1);
+//                        bookRepository.save(thisBook);
+                        user1.getBooks_purchased().add(thisBook);
+                        bookArrayList.add(thisBook);
+//                        user1 = repository.save(user1);
+                    } else {
+                        done = false;
+                        break;
+                    }
+                }
+            }
+            if (done) {
+                bookRepository.saveAll(bookArrayList);
+                return repository.save(user1);
+            } else
+                return null;
 
         } else
             return null;

@@ -8,6 +8,7 @@ import {allUsers} from './all.users.reducer';
 import {basket} from './basket.reducer';
 import {address} from './address.reducer';
 import {card} from './card.reducer';
+import {checkout} from './checkout.reducer';
 
 const rootReducer = combineReducers({
     authentication,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     alert,
     basket,
     address,
-    card
+    card,
+    checkout
 });
 
 export default rootReducer;

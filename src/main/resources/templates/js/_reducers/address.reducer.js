@@ -10,6 +10,7 @@ export function address(state = initialState, action) {
             return {
                 creatingAddress: true
             };
+        case addressConstants.CREATE_ADDRESS_THIS_SUCCESS:
         case addressConstants.CREATE_ADDRESS_SUCCESS:
             return {
                 creatingAddress: false,

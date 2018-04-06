@@ -5,3 +5,4 @@ export * from './comment.service';
 export * from './search.service';
 export * from './address.service';
 export * from './card.service';
+export * from './checkout.service';

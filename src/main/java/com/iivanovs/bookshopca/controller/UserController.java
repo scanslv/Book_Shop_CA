@@ -1,5 +1,6 @@
 package com.iivanovs.bookshopca.controller;
 
+import com.iivanovs.bookshopca.entity.Book;
 import com.iivanovs.bookshopca.entity.User;
 import com.iivanovs.bookshopca.service.UserServiceImpl;
 import com.iivanovs.bookshopca.util.ForbiddenException;
@@ -9,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,6 +80,23 @@ public class UserController {
 
             if (u == null)
                 return ResponseEntity.status(404).body("Update failed");
+            else
+                return ResponseEntity.ok(u);
+        }else
+            throw new ForbiddenException();
+    }
+
+    @RequestMapping(path = "/buy", method = RequestMethod.PUT)
+    public ResponseEntity<?> buy(Principal principal,
+                                    @RequestParam("id") long id,
+                                    @RequestBody ArrayList<Book> books) {
+        Optional<User> user1 = userService.findOne(id);
+
+        if(user1.isPresent() && user1.get().getEmail().equalsIgnoreCase(principal.getName())) {
+            User u = this.userService.buy(id, books);
+
+            if (u == null)
+                return ResponseEntity.status(404).body("Can't purchase books");
             else
                 return ResponseEntity.ok(u);
         }else

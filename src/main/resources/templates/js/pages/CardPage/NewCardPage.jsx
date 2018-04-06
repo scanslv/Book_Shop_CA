@@ -100,7 +100,7 @@ class NewCardPage extends React.Component {
                                         name="expiryY"
                                         defaultValue={expiryY}
                                         value={expiryY}
-                                        data={['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025' ]}
+                                        data={['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025']}
                                         onChange={value => this.setState({expiryY: value})}
                                     />
                                 </div>
@@ -123,7 +123,13 @@ class NewCardPage extends React.Component {
                         </button>
 
                         <button className={'btn btn-danger btn-block'}
-                                onClick={() => history.push('/users/' + id)}>Cancel
+                                onClick={() => {
+                                    if (localStorage.getItem('url') === 'basket') {
+                                        localStorage.removeItem('url');
+                                        history.push('/checkout');
+                                    } else
+                                        history.push('/users/' + id)
+                                }}>Cancel
                         </button>
                     </div>
                 )}

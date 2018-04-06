@@ -91,7 +91,6 @@ function fetchUser(email, token) {
             return Promise.reject("Username or password is incorrect");
         }
         localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(response.data));
         return response.data;
     }).catch(error => {
         return Promise.reject("Username or password is incorrect");

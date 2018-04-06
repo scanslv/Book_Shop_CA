@@ -1,5 +1,6 @@
-import {userConstants} from '../_constants';
+import {userConstants, addressConstants, cardConstants, checkoutConstants} from '../_constants';
 
+// localStorage.clear();
 let user = JSON.parse(localStorage.getItem('user'));
 const initialState = user ? {loggedIn: true, user} : {};
 
@@ -10,7 +11,15 @@ export function authentication(state = initialState, action) {
                 loggingIn: true,
                 user: action.user
             };
+        case addressConstants.CREATE_ADDRESS_THIS_SUCCESS:
+        case addressConstants.UPDATE_ADDRESS_THIS_SUCCESS:
+        case addressConstants.DELETE_ADDRESS_THIS_SUCCESS:
+        case cardConstants.CREATE_CARD_THIS_SUCCESS:
+        case cardConstants.UPDATE_CARD_THIS_SUCCESS:
+        case cardConstants.DELETE_CARD_THIS_SUCCESS:
+        case checkoutConstants.BUY_SUCCESS:
         case userConstants.LOGIN_SUCCESS:
+            localStorage.setItem('user', JSON.stringify(action.user));
             return {
                 loggedIn: true,
                 user: action.user

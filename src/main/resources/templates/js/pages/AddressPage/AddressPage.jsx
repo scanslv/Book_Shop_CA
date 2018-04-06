@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Navigation, Loader} from "../../_components/index";
 import {allUsersActions, addressActions} from "../../_actions";
 import {CountryDropdown} from 'react-country-region-selector';
+import {history} from "../../_helpers";
 
 require('react-widgets/lib/scss/react-widgets.scss');
 
@@ -63,6 +64,10 @@ class AddressPage extends React.Component {
             this.setState({city: this.props.user.address.city});
             this.setState({postCode: this.props.user.address.postCode});
             this.setState({country: this.props.user.address.country});
+            if (localStorage.getItem('url') === 'basket') {
+                localStorage.removeItem('url');
+                history.push('/checkout');
+            }
         }
         else
             this.setState({editing: true});
@@ -87,6 +92,10 @@ class AddressPage extends React.Component {
             country && country.length > 0) {
             this.setState({editing: false});
             this.props.dispatch(addressActions.update(id, address));
+            if (localStorage.getItem('url') === 'basket') {
+                localStorage.removeItem('url');
+                history.push('/checkout');
+            }
         }
     }
 

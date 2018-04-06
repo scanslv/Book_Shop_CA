@@ -7,7 +7,7 @@ export const userActions = {
     login,
     logout,
     register,
-    _delete: _delete
+    _delete: _delete,
 };
 
 function login(username, password) {
@@ -18,7 +18,11 @@ function login(username, password) {
             .then(
                 user => {
                     dispatch(success(user));
-                    history.push('/');
+                    if (localStorage.getItem('url')) {
+                        history.push('/basket');
+                        localStorage.removeItem('url');
+                    } else
+                        history.push('/');
                 },
                 error => {
                     dispatch(failure(error));

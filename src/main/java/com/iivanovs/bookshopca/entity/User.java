@@ -57,7 +57,7 @@ public class User implements Serializable {
     private Date mod_date;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     private List<Book> books_purchased = new ArrayList<Book>();
 
     @LazyCollection(LazyCollectionOption.FALSE)
