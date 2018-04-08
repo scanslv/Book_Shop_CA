@@ -1,9 +1,9 @@
-package com.iivanovs.bookshopca.repository;
+package com.iivanovs.bookshopca.dao;
 
 import com.iivanovs.bookshopca.entity.Comment;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CommentRepository extends CrudRepository<Comment, Long> {
+public interface CommentDAO extends CrudRepository<Comment, Long> {
 }

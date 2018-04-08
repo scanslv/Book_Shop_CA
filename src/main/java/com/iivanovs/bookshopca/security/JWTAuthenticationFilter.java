@@ -33,12 +33,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws AuthenticationException {
-//        if (req.getHeader("Origin") != null) {
-//            String origin = req.getHeader(ORIGIN);
-//            res.addHeader("Access-Control-Allow-Origin", "*");
-//            res.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-//            res.addHeader("Access-Control-Allow-Headers","Authorization");
-//        }
 
         try {
             com.iivanovs.bookshopca.entity.User creds = new ObjectMapper()
@@ -72,9 +66,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();
-//        res.addHeader("Access-Control-Allow-Origin", HEADER_STRING);
-//        res.addHeader("Access-Control-Allow-Origin", "*");
-//        res.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
         res.addHeader("Access-Control-Expose-Headers", "Authorization");
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
     }

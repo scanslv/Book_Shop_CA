@@ -1,5 +1,7 @@
 package com.iivanovs.bookshopca.entity;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.iivanovs.bookshopca.security.RolesEnum;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.LazyCollection;
@@ -13,28 +15,27 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Card implements Serializable {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType=DiscriminatorType.STRING, length=20)
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME,include=JsonTypeInfo.As.PROPERTY,property="type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(name="Visa",value=VisaCard.class),
+        @JsonSubTypes.Type(name="Mastercard",value=MasterCard.class),
+        @JsonSubTypes.Type(name="American Express",value=AECard.class)})
+public abstract class Card implements Serializable {
 
     //every entity requires an id, I will auto generate it
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(generator = "generator")
     private long id;
-
-    private String type;
-
     private long number;
-
     private long expiryY;
-
     private long expiryM;
-
     private long cvv;
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", nullable = false)
     private Date create_date;
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "mod_date", nullable = false)
     private Date mod_date;
@@ -55,13 +56,15 @@ public class Card implements Serializable {
         super();
     }
 
-    public Card(String type, long number, long expiryY, long expiryM, long cvv) {
-        this.type = type;
+    public Card(long number, long expiryY, long expiryM, long cvv) {
         this.number = number;
         this.expiryY = expiryY;
         this.expiryM = expiryM;
         this.cvv = cvv;
     }
+
+    @Transient
+    public abstract String getType();
 
     public long getId() {
         return id;
@@ -69,14 +72,6 @@ public class Card implements Serializable {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public long getNumber() {

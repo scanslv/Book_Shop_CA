@@ -1,10 +1,10 @@
 package com.iivanovs.bookshopca.entity;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-
-import com.iivanovs.bookshopca.security.RolesEnum;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -16,7 +16,15 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class User implements Serializable {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "role", discriminatorType=DiscriminatorType.STRING, length=20)
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME,include=JsonTypeInfo.As.PROPERTY,property="role")
+@JsonSubTypes({
+        @JsonSubTypes.Type(name="ROLE_ADMIN",value=AdminUser.class),
+        @JsonSubTypes.Type(name="ROLE_USER",value=OrdinaryUser.class),
+        @JsonSubTypes.Type(name="ANY",value=OrdinaryUser.class)
+})
+public abstract class User implements Serializable {
 
     //every entity requires an id, I will auto generate it
     @Id
@@ -37,8 +45,6 @@ public class User implements Serializable {
     private String gender;
 
     private String dob;
-
-    private String role;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToOne(orphanRemoval = true, cascade = CascadeType.REMOVE)
@@ -69,7 +75,6 @@ public class User implements Serializable {
         Date date = Calendar.getInstance().getTime();
         reg_date = date;
         mod_date = date;
-        role = RolesEnum.ROLE_USER.name();
     }
 
     @PreUpdate
@@ -92,6 +97,9 @@ public class User implements Serializable {
         this.gender = gender;
         this.dob = dob;
     }
+
+    @Transient
+    public abstract String getRole();
 
     public long getId() {
         return id;
@@ -155,14 +163,6 @@ public class User implements Serializable {
 
     public void setDob(String dob) {
         this.dob = dob;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public Date getReg_date() {

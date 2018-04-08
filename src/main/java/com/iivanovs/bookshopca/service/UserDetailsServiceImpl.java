@@ -1,6 +1,6 @@
 package com.iivanovs.bookshopca.service;
 
-import com.iivanovs.bookshopca.repository.UserRepository;
+import com.iivanovs.bookshopca.dao.UserDAO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -13,15 +13,15 @@ import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private UserRepository applicationUserRepository;
+    private UserDAO applicationUserDAO;
 
-    public UserDetailsServiceImpl(UserRepository applicationUserRepository) {
-        this.applicationUserRepository = applicationUserRepository;
+    public UserDetailsServiceImpl(UserDAO applicationUserDAO) {
+        this.applicationUserDAO = applicationUserDAO;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        com.iivanovs.bookshopca.entity.User applicationUser = applicationUserRepository.findByUsername(email);
+        com.iivanovs.bookshopca.entity.User applicationUser = applicationUserDAO.findByUsername(email);
         if (applicationUser == null) {
             throw new UsernameNotFoundException(email);
         }

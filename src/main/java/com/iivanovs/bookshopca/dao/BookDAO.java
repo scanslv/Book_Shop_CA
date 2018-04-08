@@ -1,9 +1,9 @@
-package com.iivanovs.bookshopca.repository;
+package com.iivanovs.bookshopca.dao;
 
 import com.iivanovs.bookshopca.entity.Book;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BookRepository extends CrudRepository<Book, Long> {
+public interface BookDAO extends CrudRepository<Book, Long> {
 }

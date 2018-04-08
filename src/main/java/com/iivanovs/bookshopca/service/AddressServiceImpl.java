@@ -3,8 +3,8 @@ package com.iivanovs.bookshopca.service;
 import com.iivanovs.bookshopca.Interface.AddressService;
 import com.iivanovs.bookshopca.entity.Address;
 import com.iivanovs.bookshopca.entity.User;
-import com.iivanovs.bookshopca.repository.AddressRepository;
-import com.iivanovs.bookshopca.repository.UserRepository;
+import com.iivanovs.bookshopca.dao.AddressDAO;
+import com.iivanovs.bookshopca.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,22 +14,23 @@ import java.util.Optional;
 public class AddressServiceImpl implements AddressService {
 
     @Autowired
-    private AddressRepository addressRepository;
+    private AddressDAO addressDAO;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserDAO userDAO;
 
     @Override
     public User create(long id, Address address) {
-        Optional<User> u = userRepository.findById(id);
+        Optional<User> u = userDAO.findById(id);
 
         if (u.isPresent()) {
-            Address a = new Address(address.getLine1(), address.getLine2(), address.getCity(), address.getPostCode(), address.getCountry());
-            a = addressRepository.save(a);
+            Address a = new Address(address.getLine1(), address.getLine2(),
+                    address.getCity(), address.getPostCode(), address.getCountry());
+            a = addressDAO.save(a);
             User user = u.get();
             if (user.getAddress() == null) {
                 user.setAddress(a);
-                return userRepository.save(user);
+                return userDAO.save(user);
             } else
                 return null;
         } else
@@ -38,8 +39,8 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public User update(long id, Address address) {
-        Optional<User> u = userRepository.findById(id);
-        Optional<Address> a = addressRepository.findById(address.getId());
+        Optional<User> u = userDAO.findById(id);
+        Optional<Address> a = addressDAO.findById(address.getId());
 
         if (u.isPresent() && a.isPresent()) {
             Address address1 = a.get();
@@ -48,9 +49,9 @@ public class AddressServiceImpl implements AddressService {
             address1.setCity(address.getCity());
             address1.setPostCode(address.getPostCode());
             address1.setCountry(address.getCountry());
-            addressRepository.save(address1);
+            addressDAO.save(address1);
 
-            return userRepository.save(u.get());
+            return userDAO.save(u.get());
         } else
             return null;
 
@@ -58,12 +59,12 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public User delete(long user_id) {
-        Optional<User> u = userRepository.findById(user_id);
+        Optional<User> u = userDAO.findById(user_id);
 
         if (u.isPresent()) {
             User user = u.get();
             user.setAddress(null);
-            return userRepository.save(user);
+            return userDAO.save(user);
         } else
             return null;
 
