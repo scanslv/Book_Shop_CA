@@ -2,10 +2,12 @@ import React from 'react'
 import {Navbar, Nav, NavItem} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import {connect} from 'react-redux';
+import {BooksInBasketSingleton} from "../_helpers/booksInBasketSingleton";
 
 class Navigation extends React.Component {
     render() {
-        const {user, loggedIn, booksInBasket} = this.props;
+        const {user, loggedIn} = this.props;
+        const booksInBasketSingleton = BooksInBasketSingleton.getInstance();
 
         return (
             <Navbar inverse collapseOnSelect className='navigation'>
@@ -34,7 +36,7 @@ class Navigation extends React.Component {
                         </Nav>)}
                     <Nav pullRight>
                         <LinkContainer to="/basket">
-                            <NavItem>Basket ({getCount(booksInBasket)})</NavItem>
+                            <NavItem>Basket ({booksInBasketSingleton ? booksInBasketSingleton.getBasketCount() : 0})</NavItem>
                         </LinkContainer>
                         {loggedIn ? (
                             <LinkContainer to="/logout">
@@ -50,16 +52,6 @@ class Navigation extends React.Component {
             </Navbar>
         );
     }
-}
-
-function getCount(booksInBasket){
-    let count = 0;
-
-    for(let i = 0; i< booksInBasket.length; i++){
-        count = count + booksInBasket[i].quantity;
-    }
-
-    return count;
 }
 
 function mapStateToProps(state) {

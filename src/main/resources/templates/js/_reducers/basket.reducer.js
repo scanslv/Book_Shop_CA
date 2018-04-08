@@ -1,4 +1,7 @@
 import {basketConstants, checkoutConstants} from '../_constants';
+import {BooksInBasketSingleton} from "../_helpers/booksInBasketSingleton";
+
+let booksInBasketSingleton = BooksInBasketSingleton.getInstance();
 
 const SORT_ASC = 'asc';
 const SORT_DESC = 'desc';
@@ -7,22 +10,28 @@ const defaultSortKey = 'title';
 const defaultSortOrder = SORT_ASC;
 
 const initialState = {
-    booksInBasket: [],
+    booksInBasket: booksInBasketSingleton.getBooksInBasket(),
     sortKey: defaultSortKey,
     sortOrder: defaultSortOrder
 };
 
 export function basket(state = initialState, action) {
     switch (action.type) {
+        case 'persist/REHYDRATE':{
+            booksInBasketSingleton.setBooksInBasket(action.payload.basket.booksInBasket);
+            return state
+        }
         case basketConstants.ADD_BOOK_SUCCESS:
+            booksInBasketSingleton.addBook(action.book);
             return {
                 ...state,
-                booksInBasket: addBook(state, action.book)
+                booksInBasket: booksInBasketSingleton.getBookList()
             };
         case basketConstants.REMOVE_BOOK_SUCCESS:
+            booksInBasketSingleton.removeBook(action.book);
             return {
                 ...state,
-                booksInBasket: state.booksInBasket.filter(obj => obj.book !== action.book)
+                booksInBasket: booksInBasketSingleton.getBookList()
             };
         case basketConstants.BASKET_BOOK_SORT:
             return {
@@ -31,32 +40,13 @@ export function basket(state = initialState, action) {
                 sortOrder: action.sort.order
             };
         case checkoutConstants.BUY_SUCCESS:
+            booksInBasketSingleton.clear();
             return{
-                booksInBasket: [],
+                booksInBasket: booksInBasketSingleton.getBookList(),
                 sortKey: defaultSortKey,
                 sortOrder: defaultSortOrder
             };
         default:
             return state
     }
-}
-
-function addBook(state, theBook) {
-    let newState;
-    let found = false;
-
-    newState = state.booksInBasket.map((aBookInBasket) => {
-            if (aBookInBasket.book.id === theBook.id) {
-                found = true;
-                return {...aBookInBasket, quantity: (aBookInBasket.quantity) + 1};
-            } else
-                return aBookInBasket;
-
-        }
-    );
-
-    if (!found) {
-        newState = [...state.booksInBasket, {book: theBook, quantity: 1}]
-    }
-    return newState;
 }

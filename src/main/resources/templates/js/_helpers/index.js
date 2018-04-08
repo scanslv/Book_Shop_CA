@@ -4,3 +4,4 @@ export * from './auth-header';
 export * from './sorting';
 export * from './rating';
 export * from './purchase';
+export * from './booksInBasketSingleton';

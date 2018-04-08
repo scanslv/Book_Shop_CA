@@ -1,6 +1,4 @@
 import {basketConstants} from '../_constants';
-import {alertActions} from './';
-import {history} from "../_helpers/history";
 
 export const basketActions = {
     addBook,
