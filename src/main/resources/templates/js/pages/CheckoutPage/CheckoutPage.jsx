@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {history} from '../../_helpers/index';
 import {Navigation, Loader} from '../../_components/index'
 import {Link, Redirect} from 'react-router-dom';
+import {CanPurchase, HasCard, HasAddress} from "../../_helpers";
 
 import {checkoutActions} from '../../_actions/index';
 
@@ -47,7 +48,8 @@ class CheckoutPage extends React.Component {
 
     pay() {
         const {user, booksInBasket, dispatch} = this.props;
-        dispatch(checkoutActions.buy(user.id, getBooksToPurchase(booksInBasket)));
+        if (new CanPurchase().canPurchase(user, booksInBasket))
+            dispatch(checkoutActions.buy(user.id, getBooksToPurchase(booksInBasket)));
     }
 
     render() {
@@ -76,7 +78,7 @@ class CheckoutPage extends React.Component {
                                                     </div>
                                                     <div className={'form-group' + (user.address ? '' : ' overorder')}>
                                                         <label>Ship to:</label>
-                                                        {user.address ? (
+                                                        {new HasAddress().hasAddress(user) ? (
                                                             <div className={'form-group'}>
                                                                 {user.address.line1 && user.address.line1}
                                                                 {user.address.line2 &&
@@ -96,7 +98,8 @@ class CheckoutPage extends React.Component {
                                                             </div>
                                                         ) : (
                                                             <div className={'form-group'}>
-                                                                <span className="label label-danger">Address is required</span>
+                                                                <span
+                                                                    className="label label-danger">Address is required</span>
                                                                 <Link to={'/users/' + user.id + '/newaddress'}
                                                                       onClick={() => localStorage.setItem('url', 'basket')}
                                                                       className="btn btn-link">Add
@@ -107,7 +110,7 @@ class CheckoutPage extends React.Component {
 
                                                     <div className={'form-group' + (user.card ? '' : ' overorder')}>
                                                         <label>Payment Option:</label>
-                                                        {user.card ? (
+                                                        {new HasCard().hasCard(user) ? (
                                                             <div className={'form-group'}>
                                                                 {user.card.type && user.card.type}
                                                                 {user.card.number &&
@@ -123,7 +126,8 @@ class CheckoutPage extends React.Component {
                                                             </div>
                                                         ) : (
                                                             <div className={'form-group'}>
-                                                                <span className="label label-danger">Card is required</span>
+                                                                <span
+                                                                    className="label label-danger">Card is required</span>
                                                                 <Link to={'/users/' + user.id + '/newcard'}
                                                                       onClick={() => localStorage.setItem('url', 'basket')}
                                                                       className="btn btn-link">Add Card</Link>
@@ -139,13 +143,15 @@ class CheckoutPage extends React.Component {
                                                         </span>
 
                                                         {discounted && saving > 0 ?
-                                                            <div className={'col-md-12'} style={{'padding': '10px 0 10px 0'}}>
+                                                            <div className={'col-md-12'}
+                                                                 style={{'padding': '10px 0 10px 0'}}>
                                                                 <span
                                                                     className="label label-success">Discount applied</span>
                                                                 <span className="glyphicon glyphicon-remove-circle"
                                                                       aria-hidden="true" onClick={this.removeDiscount}/>
                                                             </div> : (
-                                                                <div className={'col-md-12'} style={{'padding': '10px 0 10px 0'}}>
+                                                                <div className={'col-md-12'}
+                                                                     style={{'padding': '10px 0 10px 0'}}>
                                                                     <div className={'col-md-8 text-left'}>
                                                                         <input type="text" className="form-control"
                                                                                name="code"
@@ -176,12 +182,9 @@ class CheckoutPage extends React.Component {
                                                                 Total: {getTotal(booksInBasket, saving).toFixed(2)} EUR
                                                             </h4>
                                                         </div>
-                                                        {console.log(booksInBasket.length <= 0)}
-                                                        {console.log(!user.card)}
-                                                        {console.log(!user.address)}
                                                         <button className={'btn btn-primary btn-block'}
                                                                 onClick={this.pay}
-                                                                disabled={booksInBasket.length <= 0 || !user.card || !user.address}>
+                                                                disabled={!(new CanPurchase().canPurchase(user, booksInBasket))}>
                                                             Pay
                                                         </button>
                                                     </div>
@@ -203,7 +206,7 @@ function getBooksToPurchase(booksInBasket) {
     let booksToPurchase = [];
 
     booksInBasket.map((bookInBasket) => {
-        for(let i = 0; i < bookInBasket.quantity; i++){
+        for (let i = 0; i < bookInBasket.quantity; i++) {
             booksToPurchase.push(bookInBasket.book);
         }
     });

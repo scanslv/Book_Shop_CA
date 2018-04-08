@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {history} from '../../_helpers/index';
 import {Navigation, Loader} from '../../_components/index'
 import {sortList} from '../../_helpers/index'
+import {ValidQuantity} from "../../_helpers";
 
 import {userActions, bookActions} from '../../_actions/index';
 import {basketActions} from "../../_actions/basket.actions";
@@ -41,7 +42,7 @@ class ShowBasketPage extends React.Component {
 
     checkout() {
         this.setState({submitted: true});
-        if (canOrder(this.props.booksInBasket)) {
+        if (new ValidQuantity().isValid(this.props.booksInBasket)) {
             if (JSON.parse(localStorage.getItem('user'))) {
                 history.push('/checkout');
             } else {
@@ -184,14 +185,14 @@ class ShowBasketPage extends React.Component {
     }
 }
 
-function canOrder(booksInBasket) {
-    let canOrder = true;
-    booksInBasket.map((bookInBasket) => {
-        if (bookInBasket.book.available < bookInBasket.quantity)
-            canOrder = false;
-    });
-    return canOrder;
-}
+// function canOrder(booksInBasket) {
+//     let canOrder = true;
+//     booksInBasket.map((bookInBasket) => {
+//         if (bookInBasket.book.available < bookInBasket.quantity)
+//             canOrder = false;
+//     });
+//     return canOrder;
+// }
 
 function getTotal(booksInBasket) {
     let total = 0;
