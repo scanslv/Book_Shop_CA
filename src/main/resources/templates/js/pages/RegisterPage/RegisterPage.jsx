@@ -12,19 +12,19 @@ class RegisterPage extends React.Component {
     constructor(props) {
         super(props);
 
+        Moment.locale('en-GB');
+        momentLocalizer();
+
         this.state = {
             name: '',
             surname: '',
             email: '',
             phone: '',
             gender: 'Male',
-            dob: new Date(),
+            dob: Moment(new Date(), 'MM/DD/YYYY', true).format('MM/DD/YYYY'),
             password: '',
             submitted: false
         };
-
-        Moment.locale('en-GB');
-        momentLocalizer();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -48,6 +48,7 @@ class RegisterPage extends React.Component {
             dob: dob,
             email: email,
             password: password,
+            role: 'ANY'
         };
         const {dispatch} = this.props;
         if (user.name && user.surname && user.email && user.phone && user.gender && user.dob && user.password) {

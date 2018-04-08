@@ -1,16 +1,11 @@
 package com.iivanovs.bookshopca.entity;
 
-import com.iivanovs.bookshopca.security.RolesEnum;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 public class Comment implements Serializable {

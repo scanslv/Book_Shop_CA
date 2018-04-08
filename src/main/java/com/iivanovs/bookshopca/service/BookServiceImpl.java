@@ -2,7 +2,7 @@ package com.iivanovs.bookshopca.service;
 
 import com.iivanovs.bookshopca.Interface.BookService;
 import com.iivanovs.bookshopca.entity.Book;
-import com.iivanovs.bookshopca.repository.BookRepository;
+import com.iivanovs.bookshopca.dao.BookDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,21 +14,21 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
 
     @Autowired
-    private BookRepository bookRepository;
+    private BookDAO bookDAO;
 
     @Override
     public List<Book> findAll() {
-        return (List<Book>) bookRepository.findAll();
+        return (List<Book>) bookDAO.findAll();
     }
 
     @Override
     public Optional<Book> getOne(long id) {
-        return bookRepository.findById(id);
+        return bookDAO.findById(id);
     }
 
     @Override
     public List<Book> search(String query) {
-        List<Book> books = (List<Book>) bookRepository.findAll();
+        List<Book> books = (List<Book>) bookDAO.findAll();
         List<Book> foundBooks = new ArrayList<>();
 
         for (Book book : books) {
@@ -44,12 +44,12 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book create(Book book) {
         Book book1 = new Book(book.getTitle(), book.getAuthor(), book.getPrice(), book.getCategory(), book.getImage(), book.getAvailable());
-        return bookRepository.save(book1);
+        return bookDAO.save(book1);
     }
 
     @Override
     public Book update(Book book) {
-        Optional<Book> book1 = bookRepository.findById(book.getId());
+        Optional<Book> book1 = bookDAO.findById(book.getId());
         if (book1.isPresent()) {
             Book b = book1.get();
             b.setTitle(book.getTitle());
@@ -59,16 +59,16 @@ public class BookServiceImpl implements BookService {
             b.setImage(book.getImage());
             b.setAvailable(book.getAvailable());
 
-            return bookRepository.save(b);
+            return bookDAO.save(b);
         } else
             return null;
     }
 
     @Override
     public Book deleteById(long id) {
-        Optional<Book> user = bookRepository.findById(id);
+        Optional<Book> user = bookDAO.findById(id);
         if (user.isPresent()) {
-            bookRepository.deleteById(id);
+            bookDAO.deleteById(id);
             return user.get();
         } else
             return null;

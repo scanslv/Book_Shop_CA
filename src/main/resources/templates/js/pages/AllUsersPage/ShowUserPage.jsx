@@ -21,8 +21,7 @@ class ShowUserPage extends React.Component {
             surname: "",
             phone: "",
             gender: "",
-            dob: "",
-            role: "",
+            dob: ""
         };
 
         Moment.locale('en-GB');
@@ -62,7 +61,6 @@ class ShowUserPage extends React.Component {
             this.setState({phone: nextProps.user.phone});
             this.setState({gender: nextProps.user.gender});
             this.setState({dob: nextProps.user.dob});
-            this.setState({role: nextProps.user.role});
         }
     }
 
@@ -74,7 +72,6 @@ class ShowUserPage extends React.Component {
             this.setState({phone: this.props.user.phone});
             this.setState({gender: this.props.user.gender});
             this.setState({dob: this.props.user.dob});
-            this.setState({role: this.props.user.role});
         }
         else
             this.setState({editing: true});
@@ -82,7 +79,7 @@ class ShowUserPage extends React.Component {
 
     save() {
         this.setState({submitted: true});
-        const {id, name, surname, phone, gender, dob, role} = this.state;
+        const {id, name, surname, phone, gender, dob} = this.state;
         const user = {
             id: id,
             name: name,
@@ -90,10 +87,10 @@ class ShowUserPage extends React.Component {
             phone: phone,
             gender: gender,
             dob: dob,
-            role: role,
+            role: this.props.user.role
+
         };
         if (id.length > 0 && name && name.length > 0 && surname && surname.length > 0 && phone && phone.length > 0 && gender.length > 0 && dob.length > 0) {
-            const loggedUser = JSON.parse(localStorage.getItem("user"));
             this.props.dispatch(allUsersActions.update(user));
             this.setState({editing: false});
         }
@@ -107,8 +104,8 @@ class ShowUserPage extends React.Component {
     }
 
     render() {
-        const {user, gettingUser, dispatch, loggedUser, deleting} = this.props;
-        const {submitted, editing, name, surname, phone, gender, dob, role} = this.state;
+        const {user, gettingUser, loggedUser, deleting} = this.props;
+        const {submitted, editing, name, surname, phone, gender, dob} = this.state;
         return (
             <div>
                 <Navigation/>
@@ -190,15 +187,8 @@ class ShowUserPage extends React.Component {
 
                             {loggedUser.role === 'ROLE_ADMIN' &&
                             <div className={'form-group'}>
-                                <label htmlFor="Role">Role</label>
-                                <Combobox
-                                    name="role"
-                                    disabled={!editing}
-                                    defaultValue={editing ? role : user.role}
-                                    value={editing ? role : user.role}
-                                    data={['ROLE_USER', 'ROLE_ADMIN']}
-                                    onChange={value => this.setState({role: value})}
-                                />
+                                <label htmlFor="role">Role</label>
+                                <input type="text" className="form-control" value={user.role} disabled/>
                             </div>
                             }
 

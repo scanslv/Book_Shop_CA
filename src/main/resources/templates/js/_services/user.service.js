@@ -18,7 +18,8 @@ function login(email, password) {
         headers: {'Content-Type': 'application/json'},
         data: {
             email: email,
-            password: password
+            password: password,
+            role: 'ANY'
         },
         allowedHeaders: ['Accept-Version', 'Authorization', 'Credentials', 'Content-Type']
     };

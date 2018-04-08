@@ -103,7 +103,7 @@ function _delete(user_id) {
                         history.push('/checkout');
                     }
                     else
-                        history.push('card')
+                        history.push('/users/' + user_id)
                 },
                 error => {
                     dispatch(failure(error));
