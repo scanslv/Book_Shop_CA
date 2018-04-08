@@ -50,11 +50,9 @@ class Search extends React.Component {
 
 function mapStateToProps(state) {
     const {user, loggedIn} = state.authentication;
-    const {booksInBasket} = state.basket;
     return {
         user,
-        loggedIn,
-        booksInBasket
+        loggedIn
     };
 }
 

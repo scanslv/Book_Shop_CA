@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {history} from '../../_helpers/index';
 import {Navigation, Loader} from '../../_components/index'
 import {sortList} from '../../_helpers/index'
-import {ValidQuantity} from "../../_helpers";
+import {ValidQuantity, BooksInBasketSingleton} from "../../_helpers";
 
 import {userActions, bookActions} from '../../_actions/index';
 import {basketActions} from "../../_actions/basket.actions";
@@ -42,7 +42,7 @@ class ShowBasketPage extends React.Component {
 
     checkout() {
         this.setState({submitted: true});
-        if (new ValidQuantity().isValid(this.props.booksInBasket)) {
+        if (new ValidQuantity().isValid(BooksInBasketSingleton.getInstance().getBooksInBasket())) {
             if (JSON.parse(localStorage.getItem('user'))) {
                 history.push('/checkout');
             } else {
@@ -102,7 +102,8 @@ class ShowBasketPage extends React.Component {
 
 
     render() {
-        const {booksInBasket, sortKey, sortOrder} = this.props;
+        const {sortKey, sortOrder} = this.props;
+        const booksInBasketSingleton = BooksInBasketSingleton.getInstance();
         return (
             <div>
                 <Navigation/>
@@ -162,45 +163,27 @@ class ShowBasketPage extends React.Component {
                             </th>
                             <th></th>
                         </tr>
-                        {this.getBooks(sortList(booksInBasket, sortKey, sortOrder))}
+                        {this.getBooks(sortList(booksInBasketSingleton.getBooksInBasket(), sortKey, sortOrder))}
                         </tbody>
                     </table>
                     <hr/>
                     <table className="table table-striped">
                         <tbody>
                         <tr>
-                            <th className={'right'}>Order Total: {getTotal(booksInBasket).toFixed(2)} EUR</th>
+                            <th className={'right'}>Order Total: {(booksInBasketSingleton.getBasketTotal()).toFixed(2)} EUR</th>
                         </tr>
                         </tbody>
                     </table>
 
                     <button className={'btn btn-primary btn-block'}
                             onClick={this.checkout}
-                            disabled={booksInBasket.length === 0}>
+                            disabled={booksInBasketSingleton.length === 0}>
                         Checkout
                     </button>
                 </div>
             </div>
         )
     }
-}
-
-// function canOrder(booksInBasket) {
-//     let canOrder = true;
-//     booksInBasket.map((bookInBasket) => {
-//         if (bookInBasket.book.available < bookInBasket.quantity)
-//             canOrder = false;
-//     });
-//     return canOrder;
-// }
-
-function getTotal(booksInBasket) {
-    let total = 0;
-    booksInBasket.map((bookInBasket) => {
-        total = total + (bookInBasket.book.price * bookInBasket.quantity);
-    });
-
-    return total;
 }
 
 function mapStateToProps(state) {

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {history} from '../../_helpers/index';
 import {Navigation, Loader} from '../../_components/index'
 import {Link, Redirect} from 'react-router-dom';
-import {CanPurchase, HasCard, HasAddress} from "../../_helpers";
+import {CanPurchase, HasCard, HasAddress, BooksInBasketSingleton} from "../../_helpers";
 
 import {checkoutActions} from '../../_actions/index';
 
@@ -32,28 +32,27 @@ class CheckoutPage extends React.Component {
 
     checkDiscount() {
         this.setState({'discounted': true});
-        if (this.state.code === this.state.validCode && getBookCount(this.props.booksInBasket) >= 2) {
-            let total = 0;
-            this.props.booksInBasket.map((bookInBasket) => {
-                total = total + (bookInBasket.book.price * bookInBasket.quantity);
-            });
-            this.setState({'saving': total * 0.1})
+        const booksInBasketSingleton = BooksInBasketSingleton.getInstance();
+        if (this.state.code === this.state.validCode && booksInBasketSingleton.getBasketCount() >= 2) {
+            this.setState({'saving': booksInBasketSingleton.getBasketTotal() * 0.1})
         }
     }
 
     removeDiscount() {
+        this.setState({'code': ''});
         this.setState({'discounted': false});
         this.setState({'saving': 0})
     }
 
     pay() {
-        const {user, booksInBasket, dispatch} = this.props;
-        if (new CanPurchase().canPurchase(user, booksInBasket))
-            dispatch(checkoutActions.buy(user.id, getBooksToPurchase(booksInBasket)));
+        const {user, dispatch} = this.props;
+        if (new CanPurchase().canPurchase(user, BooksInBasketSingleton.getInstance().getBooksInBasket()))
+            dispatch(checkoutActions.buy(user.id, BooksInBasketSingleton.getInstance().getBookList()));
     }
 
     render() {
-        const {booksInBasket, user, paying} = this.props;
+        const {user, paying} = this.props;
+        const booksInBasketSingleton = BooksInBasketSingleton.getInstance();
         const {validCode, code, discounted, saving} = this.state;
         return (
             <div>
@@ -74,7 +73,8 @@ class CheckoutPage extends React.Component {
                                                 }}>
                                                     <h3>Order Summary: </h3>
                                                     <div className={'form-group'}>
-                                                        <label>Books to order: {getBookCount(booksInBasket)}</label>
+                                                        <label>Books to
+                                                            order: {booksInBasketSingleton.getBasketCount()}</label>
                                                     </div>
                                                     <div className={'form-group' + (user.address ? '' : ' overorder')}>
                                                         <label>Ship to:</label>
@@ -168,7 +168,7 @@ class CheckoutPage extends React.Component {
                                                         }
 
                                                         <div>
-                                                            {discounted && (getBookCount(booksInBasket) <= 2 && saving === 0) &&
+                                                            {discounted && (booksInBasketSingleton.getBasketCount() <= 2 && saving === 0) &&
                                                             <span className="label label-danger">Discount can't be applied</span>
                                                             }
                                                         </div>
@@ -179,12 +179,13 @@ class CheckoutPage extends React.Component {
                                                             }
                                                             <h4>
                                                                 Order
-                                                                Total: {getTotal(booksInBasket, saving).toFixed(2)} EUR
+                                                                Total: {getTotal(booksInBasketSingleton.getBasketTotal(), saving).toFixed(2)}
+                                                                EUR
                                                             </h4>
                                                         </div>
                                                         <button className={'btn btn-primary btn-block'}
                                                                 onClick={this.pay}
-                                                                disabled={!(new CanPurchase().canPurchase(user, booksInBasket))}>
+                                                                disabled={!(new CanPurchase().canPurchase(user, booksInBasketSingleton.getBooksInBasket()))}>
                                                             Pay
                                                         </button>
                                                     </div>
@@ -202,34 +203,8 @@ class CheckoutPage extends React.Component {
     }
 }
 
-function getBooksToPurchase(booksInBasket) {
-    let booksToPurchase = [];
-
-    booksInBasket.map((bookInBasket) => {
-        for (let i = 0; i < bookInBasket.quantity; i++) {
-            booksToPurchase.push(bookInBasket.book);
-        }
-    });
-
-    return booksToPurchase;
-}
-
-function getTotal(booksInBasket, saving) {
-    let total = 0;
-    booksInBasket.map((bookInBasket) => {
-        total = total + (bookInBasket.book.price * bookInBasket.quantity);
-    });
-
-    return total - saving;
-}
-
-function getBookCount(booksInBasket) {
-    let count = 0;
-    booksInBasket.map((bookInBasket) => {
-        count = count + (bookInBasket.quantity);
-    });
-
-    return count;
+function getTotal(basketTotal, saving) {
+    return basketTotal - saving;
 }
 
 function mapStateToProps(state) {
