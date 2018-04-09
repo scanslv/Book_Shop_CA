@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {history} from '../../_helpers/index';
 import {Navigation, Loader} from '../../_components/index'
 import {sortList} from '../../_helpers/index'
-import {ValidQuantity, BooksInBasketSingleton} from "../../_helpers";
+import {ValidQuantity, BooksInBasketSingleton, removeDiscounts} from "../../_helpers";
 
 import {userActions, bookActions} from '../../_actions/index';
 import {basketActions} from "../../_actions/basket.actions";
@@ -16,20 +16,15 @@ class ShowBasketPage extends React.Component {
             submitted: false,
         };
 
-        this.handleLogout = this.handleLogout.bind(this);
         this.removeFromBasket = this.removeFromBasket.bind(this);
         this.getBooks = this.getBooks.bind(this);
         this.sort = this.sort.bind(this);
         this.checkout = this.checkout.bind(this);
+        new BooksInBasketSingleton.getInstance().accept(new removeDiscounts());
     }
 
     componentWillMount() {
         this.props.dispatch(bookActions.getAll());
-    }
-
-    handleLogout() {
-        this.props.dispatch(userActions.logout());
-        // history.push('/login');
     }
 
     removeFromBasket(book) {
@@ -85,14 +80,15 @@ class ShowBasketPage extends React.Component {
                             <td style={vMiddle}>{book.quantity}</td>
                         )}
 
-                        <td style={vMiddle}>{(book.quantity * book.book.price) + ' EUR'}</td>
+                        <td style={vMiddle}>{(book.quantity * book.book.price).toFixed(2) + ' EUR'}</td>
                         <td style={vMiddle}>
                             <button onClick={(e) => {
                                 e.stopPropagation();
                                 this.removeFromBasket(book.book)
                             }
                             } disabled={book.available < 1}
-                                    className="btn btn-primary btn-block">Remove from basket
+                                    className="btn btn-primary btn-block">
+                                Remove {book.quantity && book.quantity > 1 ? 'one' : 'from basket'}
                             </button>
                         </td>
                     </tr>
@@ -170,7 +166,8 @@ class ShowBasketPage extends React.Component {
                     <table className="table table-striped">
                         <tbody>
                         <tr>
-                            <th className={'right'}>Order Total: {(booksInBasketSingleton.getBasketTotal()).toFixed(2)} EUR</th>
+                            <th className={'right'}>Order Total: {(booksInBasketSingleton.getBasketTotal()).toFixed(2) + ' EUR'}
+                            </th>
                         </tr>
                         </tbody>
                     </table>
