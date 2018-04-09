@@ -103,7 +103,10 @@ function _delete(id) {
             .then(
                 user => {
                     dispatch(success(user));
-                    history.push('/logout')
+                    if (JSON.parse(localStorage.getItem('user')).id === parseInt(id))
+                        history.push('/logout');
+                    else
+                        history.push('/users-all');
                 },
                 error => {
                     dispatch(failure(error));

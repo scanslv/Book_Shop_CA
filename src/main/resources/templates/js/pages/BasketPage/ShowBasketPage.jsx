@@ -177,7 +177,7 @@ class ShowBasketPage extends React.Component {
 
                     <button className={'btn btn-primary btn-block'}
                             onClick={this.checkout}
-                            disabled={booksInBasketSingleton.length === 0}>
+                            disabled={booksInBasketSingleton.getBasketCount() === 0}>
                         Checkout
                     </button>
                 </div>

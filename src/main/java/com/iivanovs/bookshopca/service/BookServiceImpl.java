@@ -1,8 +1,12 @@
 package com.iivanovs.bookshopca.service;
 
 import com.iivanovs.bookshopca.Interface.BookService;
+import com.iivanovs.bookshopca.dao.CommentDAO;
+import com.iivanovs.bookshopca.dao.UserDAO;
 import com.iivanovs.bookshopca.entity.Book;
 import com.iivanovs.bookshopca.dao.BookDAO;
+import com.iivanovs.bookshopca.entity.Comment;
+import com.iivanovs.bookshopca.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +19,12 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private BookDAO bookDAO;
+
+    @Autowired
+    private UserDAO userDAO;
+
+    @Autowired
+    private CommentDAO commentDAO;
 
     @Override
     public List<Book> findAll() {
@@ -66,10 +76,21 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book deleteById(long id) {
-        Optional<Book> user = bookDAO.findById(id);
-        if (user.isPresent()) {
+        Optional<Book> book = bookDAO.findById(id);
+        if (book.isPresent()) {
+            ArrayList<User> users = (ArrayList<User>) userDAO.findAll();
+            for(User user:users){
+                if(user.getBooks_purchased().contains(book.get())){
+                    user.getBooks_purchased().remove(book.get());
+                }
+                for(Comment comment: book.get().getComments()){
+                    if(user.getComments().contains(comment))
+                        user.getComments().remove(comment);
+                }
+                userDAO.save(user);
+            }
             bookDAO.deleteById(id);
-            return user.get();
+            return book.get();
         } else
             return null;
     }

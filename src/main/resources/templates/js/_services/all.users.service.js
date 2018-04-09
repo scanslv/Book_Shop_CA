@@ -83,25 +83,28 @@ function update(user) {
     });
 }
 
+// prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(id) {
+    let url;
+    if (JSON.parse(localStorage.getItem('user')).role === 'ROLE_ADMIN')
+        url = linkConstants.URL + 'admin/deleteuser?id=' + id;
+    else
+        url = linkConstants.URL + 'user?id=' + id;
     const requestOptions = {
         method: 'DELETE',
-        url: linkConstants.URL + 'user/deleteuser?id=' + id,
-        headers: {
-            'Content-Type': 'application/json', ...authHeader()
-        },
-        allowedHeaders: ['Accept-Version', 'Authorization', 'Credentials', 'Content-Type'],
-        crossDomain: true
+        url: url,
+        headers: {'Content-Type': 'application/json', ...authHeader()},
+        allowedHeaders: ['Accept-Version', 'Authorization', 'Credentials', 'Content-Type']
     };
 
     return axios(
         requestOptions
     ).then(response => {
         if (!response.data) {
-            return Promise.reject("Can't delete users");
+            return Promise.reject("Can't delete");
         }
         return response.data;
     }).catch(error => {
-        return Promise.reject("Can't delete users");
+        return Promise.reject("Can't delete");
     });
 }

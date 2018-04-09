@@ -22,9 +22,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BookDAO bookDAO;
 
-    @Autowired
-    private AddressDAO addressDAO;
-
 
     @Override
     public Iterable<User> findAll() {
@@ -40,6 +37,15 @@ public class UserServiceImpl implements UserService {
     public User deleteById(long id) {
         Optional<User> user = userDAO.findById(id);
         if (user.isPresent()) {
+            ArrayList<Book> books = (ArrayList<Book>) bookDAO.findAll();
+            for(Book book:books){
+                for(Comment comment: user.get().getComments()){
+                    if(book.getComments().contains(comment)){
+                        book.getComments().remove(comment);
+                        bookDAO.save(book);
+                    }
+                }
+            }
             userDAO.deleteById(id);
             return user.get();
         } else

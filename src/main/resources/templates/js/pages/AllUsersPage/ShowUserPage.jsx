@@ -99,7 +99,7 @@ class ShowUserPage extends React.Component {
     _delete() {
         this.setState({submitted: true});
         const {id} = this.state;
-        this.props.dispatch(userActions._delete(id));
+        this.props.dispatch(allUsersActions._delete(id));
         this.setState({editing: false});
     }
 
