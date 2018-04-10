@@ -31,7 +31,7 @@ public class CardServiceImpl implements CardService {
             else if (card instanceof MasterCard)
                 c = new MasterCard(card.getNumber(), card.getExpiryY(), card.getExpiryM(), card.getCvv());
 
-            if (c != null) {
+            if (c != null && c.validate()) {
                 c = cardDAO.save(c);
                 User user = u.get();
                 if (user.getCard() == null) {
@@ -53,17 +53,21 @@ public class CardServiceImpl implements CardService {
         if (u.isPresent() && c.isPresent()) {
             Card card1 = c.get();
             User user1 = u.get();
-            if (card1.getClass() == card.getClass()) {
-                card1.setNumber(card.getNumber());
-                card1.setExpiryY(card.getExpiryY());
-                card1.setExpiryM(card.getExpiryM());
-                card1.setCvv(card.getCvv());
-                cardDAO.save(card1);
-            } else {
-                user1.setCard(null);
-                return create(user1.getId(),card);
+            if(card.validate()) {
+                if (card1.getClass() == card.getClass()) {
+                    card1.setNumber(card.getNumber());
+                    card1.setExpiryY(card.getExpiryY());
+                    card1.setExpiryM(card.getExpiryM());
+                    card1.setCvv(card.getCvv());
+                    cardDAO.save(card1);
+                } else {
+                    user1.setCard(null);
+                    return create(user1.getId(), card);
+                }
+                return userDAO.save(user1);
             }
-            return userDAO.save(user1);
+            else
+                return null;
         } else
             return null;
 

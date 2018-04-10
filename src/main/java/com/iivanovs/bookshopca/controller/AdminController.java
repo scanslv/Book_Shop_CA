@@ -75,7 +75,7 @@ public class AdminController {
 
     @RequestMapping(path = "/createaddress", method = RequestMethod.POST)
     ResponseEntity<?> createAddress(@RequestParam("id") long user_id,
-                             @RequestBody Address address) {
+                                    @RequestBody Address address) {
         User user = this.addressService.create(user_id, address);
 
         if (user == null)
@@ -87,7 +87,7 @@ public class AdminController {
 
     @RequestMapping(path = "/updateaddress", method = RequestMethod.PUT)
     ResponseEntity<?> updateAddress(@RequestParam("id") long user_id,
-                             @RequestBody Address address) {
+                                    @RequestBody Address address) {
         User user = this.addressService.update(user_id, address);
 
         if (user == null)
@@ -110,25 +110,35 @@ public class AdminController {
 
     @RequestMapping(path = "/createcard", method = RequestMethod.POST)
     ResponseEntity<?> createCard(@RequestParam("id") long user_id,
-                             @RequestBody Card card) {
-        User user = this.cardService.create(user_id, card);
+                                 @RequestBody Card card) {
+        if (card.validate()) {
+            User user = this.cardService.create(user_id, card);
 
-        if (user == null)
-            return ResponseEntity.status(404).body("Can't create card");
-        else {
-            return ResponseEntity.ok(user);
+            if (user == null)
+                return ResponseEntity.status(404).body("Can't create card");
+            else {
+                return ResponseEntity.ok(user);
+            }
+        } else {
+            Optional<User> u = userService.findOne(user_id);
+            return u.<ResponseEntity<?>>map(user -> ResponseEntity.status(203).body(user)).orElse(null);
         }
     }
 
     @RequestMapping(path = "/updatecard", method = RequestMethod.PUT)
     ResponseEntity<?> updateCard(@RequestParam("id") long user_id,
-                             @RequestBody Card card) {
-        User user = this.cardService.update(user_id, card);
+                                 @RequestBody Card card) {
+        if (card.validate()) {
+            User user = this.cardService.update(user_id, card);
 
-        if (user == null)
-            return ResponseEntity.status(404).body("Can't update card");
-        else {
-            return ResponseEntity.ok(user);
+            if (user == null)
+                return ResponseEntity.status(404).body("Can't update card");
+            else {
+                return ResponseEntity.ok(user);
+            }
+        } else {
+            Optional<User> u = userService.findOne(user_id);
+            return u.<ResponseEntity<?>>map(user -> ResponseEntity.status(203).body(user)).orElse(null);
         }
     }
 

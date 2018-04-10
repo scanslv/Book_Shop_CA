@@ -4,6 +4,7 @@ import {Navigation, Loader, MonthBox} from "../../_components/index";
 import {allUsersActions, cardActions} from "../../_actions";
 import {Combobox} from 'react-widgets'
 import {history} from "../../_helpers";
+import {alertActions} from "../../_actions/alert.actions";
 
 require('react-widgets/lib/scss/react-widgets.scss');
 
@@ -64,8 +65,10 @@ class CardPage extends React.Component {
                 history.push('/checkout');
             }
         }
-        else
+        else {
+            this.props.dispatch(alertActions.clear());
             this.setState({editing: true});
+        }
     }
 
     save() {
@@ -87,10 +90,10 @@ class CardPage extends React.Component {
             cvv && cvv > 0) {
             this.setState({editing: false});
             this.props.dispatch(cardActions.update(id, card));
-            if (localStorage.getItem('url') === 'basket') {
-                localStorage.removeItem('url');
-                history.push('/checkout');
-            }
+            // if (localStorage.getItem('url') === 'basket') {
+            //     localStorage.removeItem('url');
+            //     history.push('/checkout');
+            // }
         }
     }
 
@@ -154,7 +157,7 @@ class CardPage extends React.Component {
                                             disabled={!editing}
                                             defaultValue={editing ? expiryM : user.card.expiryM}
                                             value={editing ? expiryM : user.card.expiryM}
-                                            data={['Jan', 'Feb', 'Mar', 'Spr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']}
+                                            data={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']}
                                             onChange={value => this.setState({expiryM: value})}
                                         />
                                     </div>

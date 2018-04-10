@@ -31,13 +31,16 @@ public class CardController {
                              @RequestBody Card card) {
         Optional<User> u = userService.findOne(user_id);
         if (u.isPresent() && u.get().getEmail().equalsIgnoreCase(principal.getName())) {
-            User user = this.cardService.create(user_id, card);
+            if (card.validate()) {
+                User user = this.cardService.create(user_id, card);
 
-            if (user == null)
-                return ResponseEntity.status(404).body("Can't create card");
-            else {
-                return ResponseEntity.ok(user);
-            }
+                if (user == null)
+                    return ResponseEntity.status(404).body("Can't create card");
+                else {
+                    return ResponseEntity.ok(user);
+                }
+            } else
+                return ResponseEntity.status(203).body(u.get());
         } else
             return ResponseEntity.status(404).body("Can't create card");
     }
@@ -48,13 +51,17 @@ public class CardController {
                              @RequestBody Card card) {
         Optional<User> u = userService.findOne(user_id);
         if (u.isPresent() && u.get().getEmail().equalsIgnoreCase(principal.getName())) {
-            User user = this.cardService.update(user_id, card);
+            if (card.validate()) {
+                User user = this.cardService.update(user_id, card);
 
-            if (user == null)
-                return ResponseEntity.status(404).body("Can't update card");
-            else {
-                return ResponseEntity.ok(user);
-            }
+                if (user == null)
+                    return ResponseEntity.status(404).body("Can't update card");
+                else {
+                    return ResponseEntity.ok(user);
+                }
+            } else
+                return ResponseEntity.status(203).body(u.get());
+
         } else
             return ResponseEntity.status(404).body("Can't update card");
     }
