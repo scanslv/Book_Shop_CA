@@ -26,11 +26,11 @@ function create(id, card) {
         requestOptions
     ).then(response => {
         if (!response.data) {
-            return Promise.reject("Can't create card");
+            return Promise.reject("Can't create card! Check card details");
         }
         return response.data;
     }).catch(error => {
-        return Promise.reject("Can't create card");
+        return Promise.reject("Can't create card! Check card details");
     });
 }
 
@@ -52,11 +52,17 @@ function update(id, card) {
         requestOptions
     ).then(response => {
         if (!response.data) {
-            return Promise.reject("Can't update card");
+            return Promise.reject("Can't update card! Check card details");
         }
-        return response.data;
+        if (response.status === 203)
+            return {
+                error: 'Can\'t update card! Check card details',
+                user: response.data
+            };
+        else
+            return {user: response.data};
     }).catch(error => {
-        return Promise.reject("Can't update card");
+        return Promise.reject("Can't update card! Check card details");
     });
 }
 

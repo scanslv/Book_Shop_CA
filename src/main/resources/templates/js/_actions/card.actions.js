@@ -57,11 +57,22 @@ function update(id, card) {
 
         cardService.update(id, card)
             .then(
-                user => {
-                    if (JSON.parse(localStorage.getItem('user')).id === parseInt(id))
-                        dispatch(successThis(user));
-                    else
-                        dispatch(success(user));
+                response => {
+                    if (response.error) {
+                        dispatch(alertActions.error(response.error));
+                        dispatch(successThis(response.user));
+                    } else {
+                        if (JSON.parse(localStorage.getItem('user')).id === parseInt(id))
+                            dispatch(successThis(response.user));
+                        else
+                            dispatch(success(response.user));
+                        if (localStorage.getItem('url') === 'basket') {
+                            localStorage.removeItem('url');
+                            history.push('/checkout');
+                        }
+                        else
+                            history.push('/users/' + id)
+                    }
                 },
                 error => {
                     dispatch(failure(error));
@@ -127,4 +138,22 @@ function _delete(user_id) {
     function failure(error) {
         return {type: cardConstants.DELETE_CARD_FAILURE, error}
     }
+}
+
+function sameCard(oldCard, newCard) {
+    if ((oldCard.id && newCard.id) && oldCard.id !== newCard.id)
+        return false;
+    if ((oldCard.type && newCard.type) && oldCard.type !== newCard.type)
+        return false;
+    if ((oldCard.number && newCard.number) && oldCard.number !== newCard.number)
+        return false;
+    if ((oldCard.expiryY && newCard.expiryY) && oldCard.expiryY !== newCard.expiryY)
+        return false;
+    if ((oldCard.expiryM && newCard.expiryM) && oldCard.expiryM !== newCard.expiryM)
+        return false;
+    if ((oldCard.cvv && newCard.cvv) && oldCard.cvv !== newCard.cvv)
+        return false;
+
+
+    return true;
 }
