@@ -86,7 +86,6 @@ class AddressPage extends React.Component {
             country: country
         };
         if (line1 && line1.length > 0 &&
-            line2 && line2.length > 0 &&
             city && city.length > 0 &&
             postCode && postCode.length > 0 &&
             country && country.length > 0) {

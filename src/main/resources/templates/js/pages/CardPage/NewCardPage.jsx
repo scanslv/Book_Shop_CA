@@ -91,7 +91,7 @@ class NewCardPage extends React.Component {
                                         name="expiryM"
                                         defaultValue={expiryM}
                                         value={expiryM}
-                                        data={['Jan', 'Feb', 'Mar', 'Spr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']}
+                                        data={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']}
                                         onChange={value => this.setState({expiryM: value})}
                                     />
                                 </div>
