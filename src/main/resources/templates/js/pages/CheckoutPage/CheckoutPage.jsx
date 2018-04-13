@@ -13,18 +13,23 @@ import {
     addDiscount20,
     removeDiscounts
 } from "../../_helpers";
+import {Shipping, AnPost, Courier, Free} from "../../_helpers/shipping";
+import {RadioGroup, Radio} from 'react-radio-group'
 
 import {checkoutActions, basketActions} from '../../_actions/index';
 
 class CheckoutPage extends React.Component {
     constructor(props) {
         super(props);
+        const booksInBasket = new BooksInBasketSingleton.getInstance();
 
         this.state = {
             discounted: false,
             code: '',
             validCode10: 'off2',
-            validCode20: 'off5'
+            validCode20: 'off5',
+            shippingMethod: 'AnPost',
+            shippingPrice: getShippingRate(new AnPost(), booksInBasket)
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -33,7 +38,8 @@ class CheckoutPage extends React.Component {
         this.checkDiscount = this.checkDiscount.bind(this);
         this.removeDiscount = this.removeDiscount.bind(this);
         this.getBooks = this.getBooks.bind(this);
-        new BooksInBasketSingleton.getInstance().accept(new removeDiscounts());
+        this.changeShipping = this.changeShipping.bind(this);
+        booksInBasket.accept(new removeDiscounts());
     }
 
     sort(key, order) {
@@ -69,6 +75,16 @@ class CheckoutPage extends React.Component {
         const {user, dispatch} = this.props;
         if (new CanPurchase().canPurchase(user, BooksInBasketSingleton.getInstance().getBooksInBasket()))
             dispatch(checkoutActions.buy(user.id, BooksInBasketSingleton.getInstance().getBookList()));
+    }
+
+    changeShipping(value) {
+        this.setState({shippingMethod: value});
+        if (value === 'AnPost')
+            this.setState({shippingPrice: getShippingRate(new AnPost(), BooksInBasketSingleton.getInstance())});
+        else if (value === 'Courier')
+            this.setState({shippingPrice: getShippingRate(new Courier(), BooksInBasketSingleton.getInstance())});
+        else if (value === 'Free')
+            this.setState({shippingPrice: getShippingRate(new Free(), BooksInBasketSingleton.getInstance())})
     }
 
     getBooks(books) {
@@ -110,7 +126,7 @@ class CheckoutPage extends React.Component {
     render() {
         const {user, paying, sortKey, sortOrder} = this.props;
         const booksInBasketSingleton = BooksInBasketSingleton.getInstance();
-        const {validCode10, validCode20, code, discounted} = this.state;
+        const {validCode10, validCode20, code, discounted, shippingMethod, shippingPrice} = this.state;
         return (
             <div>
                 {!user ?
@@ -253,6 +269,63 @@ class CheckoutPage extends React.Component {
 
                                                 <td style={{'verticalAlign': 'top', 'whiteSpace': 'normal'}}>
                                                     <div>
+
+                                                        <div className={'text-left'}
+                                                             style={{'paddingLeft': '5px', 'paddingBottom': '50px'}}>
+
+                                                            <h5>Choose Your Shipping Method</h5>
+                                                            <RadioGroup name='shippingMethod'
+                                                                        selectedValue={shippingMethod}
+                                                                        onChange={this.changeShipping}>
+                                                                <div>
+                                                                    <div className="pull-left">
+                                                                        <label>
+                                                                            <Radio value="AnPost"/> AnPost
+                                                                        </label>
+                                                                    </div>
+                                                                    <div className="pull-right">
+                                                                        <label>
+                                                                            {getShippingRate(new AnPost(), booksInBasketSingleton) + ' EUR'}
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="clearfix"></div>
+                                                                <div>
+                                                                    <div className="pull-left">
+                                                                        <label>
+                                                                            <Radio value="Courier"/> Courier
+                                                                        </label>
+                                                                    </div>
+                                                                    <div className="pull-right">
+                                                                        <label>
+                                                                            {getShippingRate(new Courier(), booksInBasketSingleton) + ' EUR'}
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="clearfix"></div>
+                                                                <div>
+                                                                    {
+                                                                        booksInBasketSingleton.getBasketCount() < 5 &&
+                                                                        <h6>
+                                                                            {'Order ' + (5 - booksInBasketSingleton.getBasketCount()) +
+                                                                            ' more to get free a shipping'}</h6>
+                                                                    }
+                                                                    <div className="pull-left">
+                                                                        <label>
+                                                                            <Radio value="Free"
+                                                                                   disabled={booksInBasketSingleton.getBasketCount() < 5}/>
+                                                                            {' Free'}
+                                                                        </label>
+                                                                    </div>
+                                                                    <div className="pull-right">
+                                                                        <label>
+                                                                            {getShippingRate(new Free(), booksInBasketSingleton) + ' EUR'}
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="clearfix"></div>
+                                                            </RadioGroup>
+                                                        </div>
                                                         <div>
                                                             <span className="label label-warning"
                                                             >*Enter '{validCode10}' to get 10% off if ordering 2 or more books
@@ -295,17 +368,18 @@ class CheckoutPage extends React.Component {
                                                             }
                                                         </div>
 
-                                                        <div className={'text-right'}>
+                                                        <div className={'text-right'} style={{'paddingTop': '100px'}}>
                                                             {discounted && booksInBasketSingleton.getBasketDiscount() > 0 &&
-                                                            <h5>You
+                                                            <h5 style={{'color': 'orange'}}>You
                                                                 saved: {booksInBasketSingleton.getBasketDiscount().toFixed(2)}
                                                                 EUR</h5>
                                                             }
+                                                            <h5>
+                                                                Order: {booksInBasketSingleton.getBasketTotal().toFixed(2) + ' EUR'}</h5>
+                                                            <h5>Shipping: {shippingPrice + ' EUR'}</h5>
                                                             <h4>
                                                                 Order
-                                                                Total: {booksInBasketSingleton.getBasketTotal().toFixed(2)}
-                                                                EUR
-                                                            </h4>
+                                                                Total: {(parseFloat(booksInBasketSingleton.getBasketTotal()) + parseFloat(shippingPrice)).toFixed(2) + ' EUR'}</h4>
                                                         </div>
                                                         <button className={'btn btn-primary btn-block'}
                                                                 onClick={this.pay}
@@ -325,6 +399,12 @@ class CheckoutPage extends React.Component {
             </div>
         )
     }
+}
+
+function getShippingRate(type, booksInBasketSingleton) {
+    const shipping = new Shipping();
+    shipping.setStrategy(type);
+    return shipping.calculate(booksInBasketSingleton.getBasketCount()).toFixed(2);
 }
 
 function mapStateToProps(state) {
