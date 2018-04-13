@@ -53,8 +53,23 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book create(Book book) {
-        Book book1 = new Book(book.getTitle(), book.getAuthor(), book.getPrice(), book.getCategory(), book.getImage(), book.getAvailable());
-        return bookDAO.save(book1);
+        ArrayList<Book> books = (ArrayList<Book>) bookDAO.findAll();
+        Book book1 = null;
+        for(Book aBook: books){
+            if(aBook.getAuthor().equalsIgnoreCase(book.getAuthor()) &&
+                    aBook.getTitle().equalsIgnoreCase(book.getTitle())){
+                book1 = aBook;
+                break;
+            }
+        }
+        if(book1 == null) {
+            book1 = new Book(book.getTitle(), book.getAuthor(), book.getPrice(), book.getCategory(), book.getImage(), book.getAvailable());
+            return bookDAO.save(book1);
+        }else {
+            book1.setAvailable(book1.getAvailable() + book.getAvailable());
+            book1.setPrice(book.getPrice());
+            return bookDAO.save(book1);
+        }
     }
 
     @Override

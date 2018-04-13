@@ -6,3 +6,4 @@ export * from './rating';
 export * from './purchase';
 export * from './booksInBasketSingleton';
 export * from './discountVisitor';
+export * from './shipping';
